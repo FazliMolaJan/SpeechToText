@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_background"
+    android:orientation="vertical">
+
+    <com.fahmtechnologies.speechtotext.AppUtils.HeaderForActivity
+        android:id="@+id/tvHeaderForActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@color/login_edittext_border"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <Spinner
+            android:id="@+id/sprLang"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/call_login_background"
+            android:text="Gujarati"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/edtSpeakData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sprLang"
+            android:layout_above="@+id/llShotCut"
+            android:background="@drawable/call_login_background"
+            android:gravity="top"
+            android:hint="@string/hint_text"
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:id="@+id/llShotCut"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_above="@+id/rlSave"
+            android:orientation="horizontal"
+            android:weightSum="11">
+
+            <RelativeLayout
+                android:id="@+id/rlBackspace"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/backspace"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlEnter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:id="@+id/ivEnter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/enter"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlMoveBack"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/back"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlMoveForword"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/forword"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+
+
+
+
+            <TextView
+                android:id="@+id/tvComma"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background"
+                android:gravity="center"
+                android:text=","
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tvFullStop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background"
+                android:gravity="center"
+                android:text="."
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tvSingleQuote"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background"
+                android:gravity="center"
+                android:text="@string/single_quote"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tvDoubleQuote"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background"
+                android:gravity="center"
+                android:text="@string/double_quote"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tvQuestMark"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background"
+                android:gravity="center"
+                android:text="@string/question_mark"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:id="@+id/rlCopyToClipBoard"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:id="@+id/ivCopyToClipBoard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/copy_text" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlClearText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/clear_all"
+                    android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSave"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_background"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <ImageView
+                android:id="@+id/image_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/save" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivStartSpeak"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_mic_black_24dp"
+                app:civ_border_color="@color/colorPrimaryDark"
+                app:civ_border_width="5dp"
+                app:civ_circle_background_color="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:id="@+id/image_Share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/share" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
+
