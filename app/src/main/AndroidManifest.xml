@@ -15,11 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.fahmtechnologies.speechtotext.Activity.TranslatateActivity"></activity>
+        <activity android:name=".Activity.TranslateActivity"/>
         <activity
-            android:name="com.fahmtechnologies.speechtotext.Activity.MainActivity"
+            android:name=".Activity.MainActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="com.fahmtechnologies.speechtotext.Activity.spleshScreen">
+        <activity android:name=".Activity.spleshScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
