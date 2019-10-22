@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.fahmtechnologies.speechtotext"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -34,5 +34,8 @@ dependencies {
 
     implementation 'pub.devrel:easypermissions:2.0.1' //Run time Permission
     implementation 'de.hdodenhof:circleimageview:3.0.0' //Rounded Image View
+
+    implementation 'com.intuit.sdp:sdp-android:1.0.6' //For Dimention
+
 }
 //apply plugin: 'com.google.gms.google-services'

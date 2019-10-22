@@ -12,5 +12,6 @@
     <color name="white_color">#FFFFFF</color>
     <color name="shortcut_background">#ECEFF1</color>
     <color name="shortcut_background_border">#F9FAFA</color>
+    <color name="black_color">#000000</color>
 
 </resources>

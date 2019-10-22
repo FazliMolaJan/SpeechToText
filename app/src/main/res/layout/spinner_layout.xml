@@ -7,15 +7,15 @@
 
     <TextView
         android:id="@+id/tvlang"
-        android:textSize="18dp"
+        android:textSize="@dimen/_18sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:textColor="#111010"/>
+        android:padding="@dimen/_8sdp"
+        android:textColor="@color/black_color"/>
     <View
         android:id="@+id/viewDivider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/_1sdp"
         android:background="#E2DFDF" />
 
 </LinearLayout>
