@@ -16,7 +16,7 @@ public class spleshScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(spleshScreen.this, MainActivity.class);
+                Intent i = new Intent(spleshScreen.this, TranslateActivity.class);
                 startActivity(i);
                 finish();
             }

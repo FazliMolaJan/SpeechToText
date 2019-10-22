@@ -14,6 +14,17 @@
     <string name="select_matching_text">Select Matching Text</string>
     <string name="process_tts">Switching Language</string>
     <string name="no_text">No Text Available</string>
+
+    <!--    language id-->
+    <string name="lang_id_hind">hi</string>
+    <string name="lang_id_gujarati">gu</string>
+    <string name="lang_id_bengali">bn</string>
+    <string name="lang_id_english">en</string>
+    <string name="lang_id_arebic">ar</string>
+    <string name="lang_id_persian">fa</string>
+    <string name="lang_id_urdu">ur</string>
+
+    <!--    language name-->
     <string name="gujarati">Gujarati</string>
     <string name="hindi">Hindi</string>
     <string name="bengali">Bengali</string>
@@ -27,5 +38,11 @@
     <string name="double_quote">\" </string>
     <string name="full_stop">.</string>
     <string name="comma">,</string>
+    <string name="speed_text_to_hindi">Speech to Text (बोल से लिखाई)</string>
+    <string name="speed_text_to_bengali">Speech to Text (বক্তৃতা থেকে লিখিত)</string>
+    <string name="speed_text_to_english">Speech to Text</string>
+    <string name="speed_text_to_arebic">Speech to Text (تحويل الكلام إلى نص)</string>
+    <string name="speed_text_to_persion">Speech to Text (نوشته شده از سخنرانی)</string>
+    <string name="speed_text_to_urdu">Speech to Text (تقرر سے لکھائی )</string>
 
 </resources>

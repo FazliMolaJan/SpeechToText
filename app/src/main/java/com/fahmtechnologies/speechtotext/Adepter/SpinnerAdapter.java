@@ -13,13 +13,13 @@ import com.fahmtechnologies.speechtotext.Model.Languages;
 
 import java.util.ArrayList;
 
-public class Adepter extends BaseAdapter {
+public class SpinnerAdapter extends BaseAdapter {
     private ArrayList<Languages> alLang;
-    private MainActivity context;
+    private Context context;
     private LayoutInflater inflater;
 
-    public Adepter(MainActivity mainActivity, ArrayList<Languages> alLang) {
-        context = mainActivity;
+    public SpinnerAdapter(Context context, ArrayList<Languages> alLang) {
+        this.context = context;
         this.alLang = alLang;
     }
 

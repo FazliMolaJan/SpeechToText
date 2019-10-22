@@ -21,14 +21,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fahmtechnologies.speechtotext.Adepter.Adepter;
+import com.fahmtechnologies.speechtotext.Adepter.SpinnerAdapter;
 import com.fahmtechnologies.speechtotext.AppUtils.GlobalMethods;
 import com.fahmtechnologies.speechtotext.AppUtils.HeaderForActivity;
 import com.fahmtechnologies.speechtotext.AppUtils.SessionManager;
@@ -391,28 +390,28 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         alLang = new ArrayList<>();
         alLang.addAll(mainActivityDao.setLanguageArray(MainActivity.this));
 
-        langAdepter = new Adepter(MainActivity.this, alLang);
-        sprLang.setAdapter((SpinnerAdapter) langAdepter);
+        langAdepter = new SpinnerAdapter(MainActivity.this, alLang);
+        sprLang.setAdapter((android.widget.SpinnerAdapter) langAdepter);
 
         sprLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     intSpinnerPosition = i;
-                    if (alLang.get(i).getStrLaguages().equalsIgnoreCase("Gujarati")) {
-                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.app_name));
-                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase("Hindi")) {
-                        tvHeaderForActivity.tvActivityName.setText("Speech to Text (बोल से लिखाई)");
-                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase("Bengali")) {
-                        tvHeaderForActivity.tvActivityName.setText("Speech to Text (বক্তৃতা থেকে লিখিত)");
-                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase("English")) {
-                        tvHeaderForActivity.tvActivityName.setText("Speech to Text");
-                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase("Arabic")) {
-                        tvHeaderForActivity.tvActivityName.setText("Speech to Text (تحويل الكلام إلى نص)");
-                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase("Persian")) {
-                        tvHeaderForActivity.tvActivityName.setText("Speech to Text (نوشته شده از سخنرانی)");
-                    } else {
-                        tvHeaderForActivity.tvActivityName.setText("Speech to Text (تقرر سے لکھائی )");
+                    if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.gujarati))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.gujarati));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.hindi))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_hindi));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.bengali))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_bengali));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.english))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_english));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.arabic))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_arebic));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.persian))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_persion));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.urdu))){
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_urdu));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -17,49 +17,48 @@ import java.util.List;
 public class MainActivityDao {
 
     private ArrayList<Languages> alLang;
-    private Languages langModel;
 
     public List<Languages> setLanguageArray(Context context){
         alLang = new ArrayList<>();
 
-        langModel = new Languages();
-        langModel.setStrLaguages(context.getString(R.string.gujarati));
-        alLang.add(langModel);
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_gujarati),
+                context.getResources().getString(R.string.gujarati)
+                ));
 
-        langModel = new Languages();
-        langModel.setStrLaguages(context.getString(R.string.hindi));
-        alLang.add(langModel);
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_hind),
+                context.getResources().getString(R.string.hindi)
+        ));
 
-        langModel = new Languages();
-        langModel.setStrLaguages(context.getString(R.string.bengali));
-        alLang.add(langModel);
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_bengali),
+                context.getResources().getString(R.string.bengali)
+        ));
 
-        langModel = new Languages();
-        langModel.setStrLaguages(context.getString(R.string.english));
-        alLang.add(langModel);
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_english),
+                context.getResources().getString(R.string.english)
+        ));
 
-        langModel = new Languages();
-        langModel.setStrLaguages(context.getString(R.string.arabic));
-        alLang.add(langModel);
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_arebic),
+                context.getResources().getString(R.string.arabic)
+        ));
 
-        langModel = new Languages();
-        langModel.setStrLaguages(context.getString(R.string.persian));
-        alLang.add(langModel);
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_persian),
+                context.getResources().getString(R.string.persian)
+        ));
 
-        langModel = new Languages();
-        langModel.setStrLaguages(context.getString(R.string.urdu));
-        alLang.add(langModel);
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu),
+                context.getResources().getString(R.string.urdu)
+        ));
 
         return alLang;
     }
 
 
     public void startSpeak(final Context context, int intSpinnerPosition){
-        if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase("Gujarati")) {
+        if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.gujarati))) {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "gu_IN");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"gu_IN"});
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_gujarati)});
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
@@ -68,11 +67,11 @@ public class MainActivityDao {
             } catch (ActivityNotFoundException a) {
                 Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
             }
-        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase("Hindi")) {
+        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.hindi))) {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "hi_IN");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"hi_IN"});
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_hind));
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_hind)});
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
@@ -81,11 +80,11 @@ public class MainActivityDao {
             } catch (ActivityNotFoundException a) {
                 Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
             }
-        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase("Bengali")) {
+        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.bengali))) {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "bn_IN");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"bn_IN"});
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_bengali));
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_bengali)});
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
@@ -94,11 +93,11 @@ public class MainActivityDao {
             } catch (ActivityNotFoundException a) {
                 Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
             }
-        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase("English")) {
+        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.english))) {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"en"});
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_english));
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_english)});
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
@@ -107,11 +106,11 @@ public class MainActivityDao {
             } catch (ActivityNotFoundException a) {
                 Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
             }
-        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase("Arabic")) {
+        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.arabic))) {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ar");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"ar"});
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_arebic));
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_arebic)});
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
@@ -120,11 +119,11 @@ public class MainActivityDao {
             } catch (ActivityNotFoundException a) {
                 Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
             }
-        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase("Persian")) {
+        } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.persian))) {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa_IR");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"fa_IR"});
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_persian));
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_persian)});
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
@@ -133,11 +132,11 @@ public class MainActivityDao {
             } catch (ActivityNotFoundException a) {
                 Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
             }
-        } else {
+        } else if(alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.urdu))){
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ur_IN");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"ur_IN"});
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_urdu));
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_urdu)});
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
