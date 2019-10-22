@@ -12,6 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/btnTextTranslate"
+        android:text="Translate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -217,11 +225,10 @@
                 android:id="@+id/ivStartSpeak"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:src="@drawable/mic_image"
                 android:layout_centerInParent="true"
-                app:civ_border_width="2dp"
+                android:src="@drawable/mic_image"
                 app:civ_border_color="@color/colorPrimaryDark"
-                />
+                app:civ_border_width="2dp" />
 
             <ImageView
                 android:id="@+id/image_Share"

@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fahmtechnologies.speechtotext.Adepter.SpinnerAdapter;
+import com.fahmtechnologies.speechtotext.AppUtils.GlobalData;
 import com.fahmtechnologies.speechtotext.AppUtils.GlobalMethods;
 import com.fahmtechnologies.speechtotext.AppUtils.HeaderForActivity;
 import com.fahmtechnologies.speechtotext.AppUtils.SessionManager;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public static final int REQ_CODE_SPEECH_INPUT = 1;
     private Spinner sprLang;
     private EditText editEmail, edtSpeakData;
-    private Button btnLogin;
+    private Button btnLogin,btnTextTranslate;
     private HeaderForActivity tvHeaderForActivity;
     private ImageView image_Share,image_save,ivStartSpeak;
     private ArrayList<Languages> alLang;
@@ -203,6 +204,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         edtSpeakData.setSelection(intCursonPosition + 1);
                     }
                     break;
+                case R.id.btnTextTranslate:
+                    Intent intent = new Intent(MainActivity.this,TranslateActivity.class);
+                    intent.putExtra(GlobalData.SELECTED_LANG_ID,intSpinnerPosition);
+                    intent.putExtra(GlobalData.SELECTED_TEXT,edtSpeakData.getText().toString().trim());
+                    startActivity(intent);
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -310,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             rlBackspace.setOnTouchListener(onTouchListener);
             rlMoveBack.setOnClickListener(clickListener);
             rlMoveForword.setOnClickListener(clickListener);
+            btnTextTranslate.setOnClickListener(clickListener);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -381,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             rlBackspace = findViewById(R.id.rlBackspace);
             rlMoveBack = findViewById(R.id.rlMoveBack);
             rlMoveForword = findViewById(R.id.rlMoveForword);
+            btnTextTranslate = findViewById(R.id.btnTextTranslate);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -28,4 +28,7 @@ public class GlobalData {
     public static int MIN_HEIGHT_IN_INCHES = 1;
     public static int MAX_HEIGHT_IN_INCHES = 11;
     public static boolean IS_FROM_APPOINTMENT;
+
+    public static String SELECTED_LANG_ID = "selected_lan_id";
+    public static final String SELECTED_TEXT = "selected_text";
 }

@@ -16,6 +16,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.fahmtechnologies.speechtotext.Adepter.SpinnerAdapter;
 import com.fahmtechnologies.speechtotext.AppUtils.AlertDialogUtility;
+import com.fahmtechnologies.speechtotext.AppUtils.GlobalData;
 import com.fahmtechnologies.speechtotext.AppUtils.HeaderForActivity;
 import com.fahmtechnologies.speechtotext.AppUtils.LogM;
 import com.fahmtechnologies.speechtotext.Dao.MainActivityDao;
@@ -41,6 +42,7 @@ public class TranslateActivity extends AppCompatActivity {
     private MainActivityDao mainActivityDao;
     private EditText edtToLanguage, edtFromLanguage;
     private HeaderForActivity headerTranslateScreen;
+    private int intSelectedLanguage =  0;
 
 
     @Override
@@ -57,6 +59,16 @@ public class TranslateActivity extends AppCompatActivity {
     private void setData() {
         headerTranslateScreen.tvActivityName.setText("Transalor Screen");
 
+        setAllDropDown();
+
+        // TODO: 22-10-2019 Set default dropdown
+        intSelectedLanguage = getIntent().getIntExtra(GlobalData.SELECTED_LANG_ID,0);
+        spinner_language_from.setSelection(intSelectedLanguage);
+        edtFromLanguage.setText(getIntent().getStringExtra(GlobalData.SELECTED_TEXT));
+        setSpinnerSelection();
+    }
+
+    private void setAllDropDown() {
         alLanguage = new ArrayList<>();
         mainActivityDao = new MainActivityDao();
         alLanguage.addAll(mainActivityDao.setLanguageArray(TranslateActivity.this));
@@ -64,8 +76,6 @@ public class TranslateActivity extends AppCompatActivity {
 
         spinner_language_from.setAdapter(adapterFromLang);
         spinner_language_to.setAdapter(adapterFromLang);
-
-        setSpinnerSelection();
     }
 
     private void setSpinnerSelection() {
