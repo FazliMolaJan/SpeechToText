@@ -14,11 +14,10 @@
 
     <Button
         android:id="@+id/btnTextTranslate"
-        android:text="Translate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        />
+        android:text="Translate" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,7 +31,7 @@
             android:id="@+id/sprLang"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/call_login_background"
+            android:spinnerMode="dropdown"
             android:text="Gujarati"
             android:textSize="@dimen/_13sdp" />
 

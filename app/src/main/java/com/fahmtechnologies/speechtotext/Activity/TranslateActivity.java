@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,13 +37,14 @@ public class TranslateActivity extends AppCompatActivity {
     private String mLanguageCodeFrom = "en";
     private String mLanguageCodeTo = "gu";
     private Button btnTranslante;
-    private Spinner spinner_language_from, spinner_language_to;
+    private Spinner spinner_language_to;
     private SpinnerAdapter adapterFromLang;
     private ArrayList<Languages> alLanguage;
     private MainActivityDao mainActivityDao;
     private EditText edtToLanguage, edtFromLanguage;
     private HeaderForActivity headerTranslateScreen;
-    private int intSelectedLanguage =  0;
+    private int intSelectedLanguage = 0;
+    private TextView tvSelectedLang;
 
 
     @Override
@@ -62,8 +64,9 @@ public class TranslateActivity extends AppCompatActivity {
         setAllDropDown();
 
         // TODO: 22-10-2019 Set default dropdown
-        intSelectedLanguage = getIntent().getIntExtra(GlobalData.SELECTED_LANG_ID,0);
-        spinner_language_from.setSelection(intSelectedLanguage);
+        intSelectedLanguage = getIntent().getIntExtra(GlobalData.SELECTED_LANG_ID, 0);
+        tvSelectedLang.setText(alLanguage.get(intSelectedLanguage).getStrLaguages());
+
         edtFromLanguage.setText(getIntent().getStringExtra(GlobalData.SELECTED_TEXT));
         setSpinnerSelection();
     }
@@ -74,24 +77,10 @@ public class TranslateActivity extends AppCompatActivity {
         alLanguage.addAll(mainActivityDao.setLanguageArray(TranslateActivity.this));
         adapterFromLang = new SpinnerAdapter(TranslateActivity.this, alLanguage);
 
-        spinner_language_from.setAdapter(adapterFromLang);
         spinner_language_to.setAdapter(adapterFromLang);
     }
 
     private void setSpinnerSelection() {
-        spinner_language_from.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                mLanguageCodeFrom = alLanguage.get(position).getStrLangId();
-                LogM.Loge(" Selected Language => " + alLanguage.get(position).getStrLaguages());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
         spinner_language_to.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -134,15 +123,14 @@ public class TranslateActivity extends AppCompatActivity {
         }
     };
 
-
     private void getIds() {
         try {
             btnTranslante = findViewById(R.id.btnTranslante);
             spinner_language_to = findViewById(R.id.spinner_language_to);
-            spinner_language_from = findViewById(R.id.spinner_language_from);
             edtFromLanguage = findViewById(R.id.edtFromLanguage);
             edtToLanguage = findViewById(R.id.edtToLanguage);
             headerTranslateScreen = findViewById(R.id.headerTranslateScreen);
+            tvSelectedLang = findViewById(R.id.tvSelectedLang);
         } catch (Exception e) {
             e.printStackTrace();
         }
