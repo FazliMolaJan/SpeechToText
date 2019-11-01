@@ -160,7 +160,9 @@ public class TranslateActivity extends AppCompatActivity {
                         try {
                             if (response.getInt("code") == 200) {
                                 JSONArray array = response.getJSONArray("text");
-                                edtToLanguage.setText(array.toString());
+                                String data = array.toString();
+                                data = data.replaceAll("[\\p{Ps}\\p{Pe}]", "");
+                                edtToLanguage.setText(data);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

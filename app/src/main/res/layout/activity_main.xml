@@ -12,13 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnTextTranslate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Translate" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -237,6 +230,16 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/share" />
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnTextTranslate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Translate"
+            android:layout_above="@+id/llShotCut"
+            android:layout_alignParentRight="true"
+            />
+
     </RelativeLayout>
 </LinearLayout>
 

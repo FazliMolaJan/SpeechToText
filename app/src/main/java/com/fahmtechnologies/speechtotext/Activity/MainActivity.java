@@ -8,17 +8,22 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public static final int REQ_CODE_SPEECH_INPUT = 1;
     private Spinner sprLang;
     private EditText editEmail, edtSpeakData;
-    private Button btnLogin,btnTextTranslate;
+    private Button btnLogin, btnTextTranslate;
     private HeaderForActivity tvHeaderForActivity;
-    private ImageView image_Share,image_save,ivStartSpeak;
+    private ImageView image_Share, image_save, ivStartSpeak;
     private ArrayList<Languages> alLang;
     private Adapter langAdepter;
     private TextView tvCloseEmail, tvQuestMark, tvDoubleQuote, tvSingleQuote, tvFullStop, tvComma;
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private String WHITE_SPACE = " ";
     private MainActivityDao mainActivityDao;
 
-    private RelativeLayout rlCopyToClipBoard,rlBackspace,rlEnter,rlClearText,rlMoveBack,rlMoveForword;
+    private RelativeLayout rlCopyToClipBoard, rlBackspace, rlEnter, rlClearText, rlMoveBack, rlMoveForword;
 
 
     // TODO: 04-10-2019 Delete character related stuff by Sakib
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     private View.OnClickListener clickListener = (v) -> {
         try {
-            GlobalMethods.hideKeyBoard(MainActivity.this,v);
+            GlobalMethods.hideKeyBoard(MainActivity.this, v);
             switch (v.getId()) {
                 case R.id.rlCopyToClipBoard:
                     inputText = edtSpeakData.getText().toString();
@@ -193,22 +198,26 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.rlMoveBack:
                     getCursorPosition();
-                    if(intCursonPosition > 0){
+                    if (intCursonPosition > 0) {
                         edtSpeakData.setSelection(intCursonPosition - 1);
                     }
                     break;
                 case R.id.rlMoveForword:
                     getCursorPosition();
                     int edttextIndex = edtSpeakData.getText().toString().length();
-                    if(intCursonPosition < edttextIndex ){
+                    if (intCursonPosition < edttextIndex) {
                         edtSpeakData.setSelection(intCursonPosition + 1);
                     }
                     break;
                 case R.id.btnTextTranslate:
-                    Intent intent = new Intent(MainActivity.this,TranslateActivity.class);
-                    intent.putExtra(GlobalData.SELECTED_LANG_ID,intSpinnerPosition);
-                    intent.putExtra(GlobalData.SELECTED_TEXT,edtSpeakData.getText().toString().trim());
-                    startActivity(intent);
+                    if (edtSpeakData.getText().toString().trim().equalsIgnoreCase("")) {
+                        GlobalMethods.showToast(MainActivity.this, getResources().getString(R.string.please_enter_value));
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, TranslateActivity.class);
+                        intent.putExtra(GlobalData.SELECTED_LANG_ID, intSpinnerPosition);
+                        intent.putExtra(GlobalData.SELECTED_TEXT, edtSpeakData.getText().toString().trim());
+                        startActivity(intent);
+                    }
                     break;
             }
         } catch (Exception e) {
@@ -419,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_arebic));
                     } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.persian))) {
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_persion));
-                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.urdu))){
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.urdu))) {
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_urdu));
                     }
                 } catch (Exception e) {
