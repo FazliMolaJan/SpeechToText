@@ -66,6 +66,7 @@ public class TranslateActivity extends AppCompatActivity {
         // TODO: 22-10-2019 Set default dropdown
         intSelectedLanguage = getIntent().getIntExtra(GlobalData.SELECTED_LANG_ID, 0);
         tvSelectedLang.setText(alLanguage.get(intSelectedLanguage).getStrLaguages());
+        mLanguageCodeFrom = alLanguage.get(intSelectedLanguage).getStrLangId();
 
         edtFromLanguage.setText(getIntent().getStringExtra(GlobalData.SELECTED_TEXT));
         setSpinnerSelection();
