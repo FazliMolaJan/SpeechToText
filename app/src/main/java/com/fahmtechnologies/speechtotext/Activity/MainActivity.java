@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private EditText editEmail, edtSpeakData;
     private Button btnLogin, btnTextTranslate;
     private HeaderForActivity tvHeaderForActivity;
-    private ImageView image_Share, image_save, ivStartSpeak;
+    private ImageView image_Share, image_save, ivStartSpeak,ivTextToSpeech;
     private ArrayList<Languages> alLang;
     private Adapter langAdepter;
     private TextView tvCloseEmail, tvQuestMark, tvDoubleQuote, tvSingleQuote, tvFullStop, tvComma;
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     private RelativeLayout rlCopyToClipBoard, rlBackspace, rlEnter, rlClearText, rlMoveBack, rlMoveForword;
 
+    private TextToSpeech textToSpeech;
 
     // TODO: 04-10-2019 Delete character related stuff by Sakib
     private Handler handler;
@@ -102,6 +105,22 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     private void setData() {
+        textToSpeech = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.US);
+//                    String langId = "";
+//                    switch (alLang.get(intSpinnerPosition).getStrLangId()){
+//                        case "":
+//                            textToSpeech.setLanguage(Locale.US)
+//                            break;
+//                    }
+////                    textToSpeech.setLanguage(alLang.get(intSpinnerPosition).getStrLangId());
+                }
+            }
+        });
+
         mainActivityDao = new MainActivityDao();
         setInputtypeAdepter();
         setEmailDialog();
@@ -219,6 +238,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         startActivity(intent);
                     }
                     break;
+                case R.id.ivTextToSpeech:
+                    textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -327,6 +349,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             rlMoveBack.setOnClickListener(clickListener);
             rlMoveForword.setOnClickListener(clickListener);
             btnTextTranslate.setOnClickListener(clickListener);
+            ivTextToSpeech.setOnClickListener(clickListener);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -399,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             rlMoveBack = findViewById(R.id.rlMoveBack);
             rlMoveForword = findViewById(R.id.rlMoveForword);
             btnTextTranslate = findViewById(R.id.btnTextTranslate);
+            ivTextToSpeech = findViewById(R.id.ivTextToSpeech);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -240,6 +240,15 @@
             android:layout_alignParentRight="true"
             />
 
+        <ImageView
+            android:id="@+id/ivTextToSpeech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/llShotCut"
+            android:src="@drawable/text_to_speech"
+            android:padding="@dimen/_5sdp"
+            />
+
     </RelativeLayout>
 </LinearLayout>
 
