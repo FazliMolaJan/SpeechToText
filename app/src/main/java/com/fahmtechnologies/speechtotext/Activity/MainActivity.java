@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     break;
                 case R.id.rlClearText:
-                    GlobalMethods.CustomAlert(MainActivity.this, "Speech To Text Demo", "Are you sure you want to clear all data?",
+                    GlobalMethods.CustomAlert(MainActivity.this, "Speech To Text", "Are you sure you want to clear all data?",
                             "yes", "No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.image_save:
                     if (edtSpeakData.getText().toString().length() <= 0) {
-                        Toast.makeText(MainActivity.this, "Please Enter Text", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Please enter text", Toast.LENGTH_SHORT).show();
                     } else {
                         Calendar cal = Calendar.getInstance();
                         Date date = cal.getTime();
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.image_Share:
                     if (edtSpeakData.getText().toString().length() <= 0) {
-                        Toast.makeText(MainActivity.this, " Please Enter text", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, " Please enter text", Toast.LENGTH_SHORT).show();
                     } else {
                         Intent shareText = new Intent();
                         shareText.setAction(Intent.ACTION_SEND);
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         builder.dismiss();
                         SessionManager.saveEmail(MainActivity.this, true);
                     } else {
-                        Toast.makeText(MainActivity.this, "Please Enter valid Email", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case R.id.tvCloseEmail:
