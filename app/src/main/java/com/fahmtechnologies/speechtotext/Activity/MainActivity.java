@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private EditText editEmail, edtSpeakData;
     private Button btnLogin, btnTextTranslate;
     private HeaderForActivity tvHeaderForActivity;
-    private ImageView image_Share, image_save, ivStartSpeak,ivTextToSpeech;
+    private ImageView image_Share, image_save, ivStartSpeak, ivTextToSpeech;
     private ArrayList<Languages> alLang;
     private Adapter langAdepter;
     private TextView tvCloseEmail, tvQuestMark, tvDoubleQuote, tvSingleQuote, tvFullStop, tvComma;
@@ -105,28 +105,52 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     private void setData() {
-        textToSpeech = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.US);
-//                    String langId = "";
-//                    switch (alLang.get(intSpinnerPosition).getStrLangId()){
-//                        case "":
-//                            textToSpeech.setLanguage(Locale.US)
-//                            break;
-//                    }
-////                    textToSpeech.setLanguage(alLang.get(intSpinnerPosition).getStrLangId());
-                }
-            }
-        });
-
+        setTextToSpeech();
         mainActivityDao = new MainActivityDao();
         setInputtypeAdepter();
         setEmailDialog();
         if (!SessionManager.isEmailSaved(MainActivity.this)) {
             builder.show();
         }
+    }
+
+    private void setTextToSpeech() {
+        textToSpeech = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    switch (alLang.get(intSpinnerPosition).getStrLaguages()) {
+                        case "Urdu":
+                            textToSpeech.setLanguage(new Locale("urd"));
+                            break;
+                        case "Gujarati":
+                            textToSpeech.setLanguage(new Locale("gu"));
+                            break;
+                        case "Hindi":
+                            textToSpeech.setLanguage(new Locale("hi"));
+                            break;
+                        case "Bengali":
+                            textToSpeech.setLanguage(new Locale("bn"));
+                            break;
+                        case "English":
+                            textToSpeech.setLanguage(Locale.US);
+                            break;
+                        case "French":
+                            textToSpeech.setLanguage(Locale.FRENCH);
+                            break;
+                        case "Arabic":
+                            textToSpeech.setLanguage(new Locale("ar"));
+                            break;
+                        case "Persian":
+                            textToSpeech.setLanguage(new Locale("fa"));
+                            break;
+                        default:
+                            textToSpeech.setLanguage(Locale.US);
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     private View.OnClickListener clickListener = (v) -> {
@@ -240,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.ivTextToSpeech:
                     textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
+                    setTextToSpeech();
                     break;
             }
         } catch (Exception e) {

@@ -29,18 +29,21 @@ public class MainActivityDao {
                 context.getResources().getString(R.string.hindi)
         ));
 
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_bengali),
-                context.getResources().getString(R.string.bengali)
-        ));
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_mrathi),
-                context.getResources().getString(R.string.marathi)
-        ));
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_kannada),
-                context.getResources().getString(R.string.kannada)
-        ));
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_english),
                 context.getResources().getString(R.string.english)
         ));
+
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_bengali),
+                context.getResources().getString(R.string.bengali)
+        ));
+
+//        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_mrathi),
+//                context.getResources().getString(R.string.marathi)
+//        ));
+//        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_kannada),
+//                context.getResources().getString(R.string.kannada)
+//        ));
+
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_french),
                 context.getResources().getString(R.string.french)
         ));
@@ -56,7 +59,6 @@ public class MainActivityDao {
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu),
                 context.getResources().getString(R.string.urdu)
         ));
-
         return alLang;
     }
 
