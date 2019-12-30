@@ -27,7 +27,7 @@
     <string name="lang_id_kannada">kn</string>
     <string name="lang_id_arebic">ar</string>
     <string name="lang_id_persian">fa</string>
-    <string name="lang_id_urdu">ur</string>
+    <string name="lang_id_urdu">ur-IN</string>
 
     <!--    language name-->
     <string name="gujarati">Gujarati</string>
