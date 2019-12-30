@@ -446,8 +446,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_hindi));
                     } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.bengali))) {
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_bengali));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.marathi))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_bengali));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.kannada))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_kannda));
                     } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.english))) {
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_english));
+                    } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.french))) {
+                        tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_french));
                     } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.arabic))) {
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.speed_text_to_arebic));
                     } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.persian))) {

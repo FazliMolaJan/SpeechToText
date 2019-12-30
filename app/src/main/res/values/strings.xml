@@ -20,6 +20,11 @@
     <string name="lang_id_gujarati">gu</string>
     <string name="lang_id_bengali">bn</string>
     <string name="lang_id_english">en</string>
+    <string name="lang_id_french">fr</string>
+    <string name="lang_id_marathi">mr_IN</string>
+    <string name="lang_id_mrathi">mr</string>
+    <string name="lang_id_kannad">kn_IN</string>
+    <string name="lang_id_kannada">kn</string>
     <string name="lang_id_arebic">ar</string>
     <string name="lang_id_persian">fa</string>
     <string name="lang_id_urdu">ur</string>
@@ -28,7 +33,10 @@
     <string name="gujarati">Gujarati</string>
     <string name="hindi">Hindi</string>
     <string name="bengali">Bengali</string>
+    <string name="marathi">Marathi</string>
+    <string name="kannada">Kannada</string>
     <string name="english">English</string>
+    <string name="french">French</string>
     <string name="arabic">Arabic</string>
     <string name="persian">Persian</string>
     <string name="urdu">Urdu</string>
@@ -40,7 +48,10 @@
     <string name="comma">,</string>
     <string name="speed_text_to_hindi">Speech to Text (बोल से लिखाई)</string>
     <string name="speed_text_to_bengali">Speech to Text (বক্তৃতা থেকে লিখিত)</string>
+    <string name="speed_text_to_marathi">Speech to Text (भाषण मजकूर)</string>
+    <string name="speed_text_to_kannda">Speech to Text (ಭಾಷಣದ ಪಠ್ಯ)</string>
     <string name="speed_text_to_english">Speech to Text</string>
+    <string name="speed_text_to_french">Speech to Text (parole-texte)</string>
     <string name="speed_text_to_arebic">Speech to Text (تحويل الكلام إلى نص)</string>
     <string name="speed_text_to_persion">Speech to Text (نوشته شده از سخنرانی)</string>
     <string name="speed_text_to_urdu">Speech to Text (تقرر سے لکھائی )</string>
