@@ -75,43 +75,10 @@
                     android:id="@+id/ivEnter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/enter" />
 
             </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rlMoveBack"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shortcut_background">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/back" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rlMoveForword"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shortcut_background">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/forword" />
-
-            </RelativeLayout>
-
 
             <TextView
                 android:id="@+id/tvComma"
@@ -161,7 +128,7 @@
                 android:background="@drawable/shortcut_background"
                 android:gravity="center"
                 android:text="@string/question_mark"
-                android:textSize="@dimen/_200sdp" />
+                android:textSize="@dimen/_20sdp" />
 
             <RelativeLayout
                 android:id="@+id/rlCopyToClipBoard"
@@ -190,7 +157,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/file" />
+                    android:src="@drawable/delete_icons" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlTextToSpeech"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/text_to_speech" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlWhatsAppShare"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shortcut_background">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/whatsapp_icons" />
 
             </RelativeLayout>
 
@@ -239,15 +236,6 @@
             android:visibility="gone"
             android:layout_above="@+id/llShotCut"
             android:layout_alignParentRight="true"
-            />
-
-        <ImageView
-            android:id="@+id/ivTextToSpeech"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/llShotCut"
-            android:src="@drawable/text_to_speech"
-            android:padding="@dimen/_5sdp"
             />
 
     </RelativeLayout>

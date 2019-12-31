@@ -28,6 +28,8 @@
     <string name="lang_id_arebic">ar</string>
     <string name="lang_id_persian">fa</string>
     <string name="lang_id_urdu">ur-IN</string>
+    <string name="lang_id_Swahili">sw</string>
+
 
     <!--    language name-->
     <string name="gujarati">Gujarati</string>
@@ -40,6 +42,7 @@
     <string name="arabic">Arabic</string>
     <string name="persian">Persian</string>
     <string name="urdu">Urdu</string>
+    <string name="swahili">Swahili</string>
 
     <string name="question_mark">\? </string>
     <string name="single_quote">\' </string>

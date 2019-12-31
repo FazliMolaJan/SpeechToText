@@ -48,6 +48,10 @@ public class MainActivityDao {
                 context.getResources().getString(R.string.french)
         ));
 
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_Swahili),
+                context.getResources().getString(R.string.swahili)
+        ));
+
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_arebic),
                 context.getResources().getString(R.string.arabic)
         ));
@@ -59,142 +63,49 @@ public class MainActivityDao {
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu),
                 context.getResources().getString(R.string.urdu)
         ));
+
         return alLang;
     }
 
 
     public void startSpeak(final Context context, int intSpinnerPosition){
         if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.gujarati))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "gu_IN");
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_gujarati)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_gujarati),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.hindi))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_hind));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_hind)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
-
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_hind),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.bengali))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_bengali));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_bengali)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_bengali),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.marathi))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_marathi));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_marathi)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_marathi),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.kannada))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_kannad));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_kannad)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_kannad),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.english))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_english));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_english)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_english),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.french))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_french));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_french)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_french),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.arabic))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_arebic));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_arebic)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_arebic),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.persian))) {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_persian));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_persian)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_persian),context);
         } else if(alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.urdu))){
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, context.getResources().getString(R.string.lang_id_urdu));
-            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_urdu)});
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
-            try {
-                ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
-            } catch (ActivityNotFoundException a) {
-                Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
-            }
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_urdu),context);
+        } else if(alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.swahili))){
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_Swahili),context);
+        }
+    }
+
+    private void setSpeechToTextIntent(String languageId, Context context) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageId);
+        intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{context.getResources().getString(R.string.lang_id_gujarati)});
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 20000000);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000000);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
+        try {
+            ((Activity) context).startActivityForResult(intent, MainActivity.REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(context, context.getString(R.string.language_not_supported), Toast.LENGTH_SHORT).show();
         }
     }
 }

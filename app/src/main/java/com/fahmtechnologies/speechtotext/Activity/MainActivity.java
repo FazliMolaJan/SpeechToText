@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private EditText editEmail, edtSpeakData;
     private Button btnLogin, btnTextTranslate;
     private HeaderForActivity tvHeaderForActivity;
-    private ImageView image_Share, image_save, ivStartSpeak, ivTextToSpeech;
+    private ImageView image_Share, image_save, ivStartSpeak;
     private ArrayList<Languages> alLang;
     private Adapter langAdepter;
     private TextView tvCloseEmail, tvQuestMark, tvDoubleQuote, tvSingleQuote, tvFullStop, tvComma;
@@ -73,9 +75,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private boolean isSingleQuoteStart, isDoubleQuoteStart;
     private String WHITE_SPACE = " ";
     private MainActivityDao mainActivityDao;
-
-    private RelativeLayout rlCopyToClipBoard, rlBackspace, rlEnter, rlClearText, rlMoveBack, rlMoveForword;
-
+    private RelativeLayout rlCopyToClipBoard, rlBackspace, rlEnter, rlClearText,rlTextToSpeech,rlWhatsAppShare;
     private TextToSpeech textToSpeech;
 
     // TODO: 04-10-2019 Delete character related stuff by Sakib
@@ -239,19 +239,19 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 case R.id.tvComma:
                     setComma();
                     break;
-                case R.id.rlMoveBack:
-                    getCursorPosition();
-                    if (intCursonPosition > 0) {
-                        edtSpeakData.setSelection(intCursonPosition - 1);
-                    }
-                    break;
-                case R.id.rlMoveForword:
-                    getCursorPosition();
-                    int edttextIndex = edtSpeakData.getText().toString().length();
-                    if (intCursonPosition < edttextIndex) {
-                        edtSpeakData.setSelection(intCursonPosition + 1);
-                    }
-                    break;
+//                case R.id.rlMoveBack:
+//                    getCursorPosition();
+//                    if (intCursonPosition > 0) {
+//                        edtSpeakData.setSelection(intCursonPosition - 1);
+//                    }
+//                    break;
+//                case R.id.rlMoveForword:
+//                    getCursorPosition();
+//                    int edttextIndex = edtSpeakData.getText().toString().length();
+//                    if (intCursonPosition < edttextIndex) {
+//                        edtSpeakData.setSelection(intCursonPosition + 1);
+//                    }
+//                    break;
                 case R.id.btnTextTranslate:
                     if (edtSpeakData.getText().toString().trim().equalsIgnoreCase("")) {
                         GlobalMethods.showToast(MainActivity.this, getResources().getString(R.string.please_enter_value));
@@ -262,15 +262,31 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         startActivity(intent);
                     }
                     break;
-                case R.id.ivTextToSpeech:
+                case R.id.rlTextToSpeech:
+                    GlobalMethods.showToast(MainActivity.this,"Coming soon");
                     textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
                     setTextToSpeech();
+                    break;
+                case R.id.rlWhatsAppShare:
+                    shareViaWhatsApp();
                     break;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     };
+
+    public void shareViaWhatsApp() {
+        Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+        whatsappIntent.setType("text/plain");
+        whatsappIntent.setPackage("com.whatsapp");
+        whatsappIntent.putExtra(Intent.EXTRA_TEXT, edtSpeakData.getText().toString().trim());
+        try {
+            Objects.requireNonNull(MainActivity.this).startActivity(whatsappIntent);
+        } catch (android.content.ActivityNotFoundException ex) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.whatsapp")));
+        }
+    }
 
     private void setBackSpace() {
         getCursorPosition();
@@ -371,10 +387,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             tvFullStop.setOnClickListener(clickListener);
             tvComma.setOnClickListener(clickListener);
             rlBackspace.setOnTouchListener(onTouchListener);
-            rlMoveBack.setOnClickListener(clickListener);
-            rlMoveForword.setOnClickListener(clickListener);
             btnTextTranslate.setOnClickListener(clickListener);
-            ivTextToSpeech.setOnClickListener(clickListener);
+            rlTextToSpeech.setOnClickListener(clickListener);
+            rlWhatsAppShare.setOnClickListener(clickListener);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -444,10 +459,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             tvFullStop = findViewById(R.id.tvFullStop);
             tvComma = findViewById(R.id.tvComma);
             rlBackspace = findViewById(R.id.rlBackspace);
-            rlMoveBack = findViewById(R.id.rlMoveBack);
-            rlMoveForword = findViewById(R.id.rlMoveForword);
             btnTextTranslate = findViewById(R.id.btnTextTranslate);
-            ivTextToSpeech = findViewById(R.id.ivTextToSpeech);
+            rlTextToSpeech = findViewById(R.id.rlTextToSpeech);
+            rlWhatsAppShare = findViewById(R.id.rlWhatsAppShare);
         } catch (Exception e) {
             e.printStackTrace();
         }
