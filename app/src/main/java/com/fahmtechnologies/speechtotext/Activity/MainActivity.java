@@ -8,9 +8,15 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -42,6 +48,15 @@ import com.fahmtechnologies.speechtotext.AppUtils.SessionManager;
 import com.fahmtechnologies.speechtotext.Dao.MainActivityDao;
 import com.fahmtechnologies.speechtotext.Model.Languages;
 import com.fahmtechnologies.speechtotext.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,12 +71,13 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 
-public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public static final int REQ_CODE_SPEECH_INPUT = 1;
     private Spinner sprLang;
     private EditText editEmail, edtSpeakData;
-    private Button btnLogin, btnTextTranslate;
+    private Button btnTextTranslate;
     private HeaderForActivity tvHeaderForActivity;
     private ImageView image_Share, image_save, ivStartSpeak;
     private ArrayList<Languages> alLang;
@@ -69,13 +85,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private TextView tvCloseEmail, tvQuestMark, tvDoubleQuote, tvSingleQuote, tvFullStop, tvComma;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+", Filename, inputText, strEmail;
     private int intCursonPosition = 0, intSpinnerPosition = 0;
-    private AlertDialog builder;
-    private static final int RC_WRING_STORAGE = 123;
+    private static final int RC_HOME_SCREEN_PERMISSION = 123;
     private String[] allPermissionArray = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
     private boolean isSingleQuoteStart, isDoubleQuoteStart;
     private String WHITE_SPACE = " ";
     private MainActivityDao mainActivityDao;
-    private RelativeLayout rlCopyToClipBoard, rlBackspace, rlEnter, rlClearText,rlTextToSpeech,rlWhatsAppShare;
+    private RelativeLayout rlCopyToClipBoard, rlBackspace, rlEnter, rlClearText, rlTextToSpeech, rlWhatsAppShare;
     private TextToSpeech textToSpeech;
 
     // TODO: 04-10-2019 Delete character related stuff by Sakib
@@ -83,35 +98,83 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private Runnable runnable;
     private int DELETE_CHARACTER_INTERVAL = 100; //miliseconds
 
+    // TODO: 31-12-2019 Location related data by Sakib START
+    //Define a request code to send to Google Play services
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private double currentLatitude;
+    private double currentLongitude;
+    // TODO: 31-12-2019 Location related data by Sakib END
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        callAllPermission();
         getId();
         setClickListerner();
         setData();
     }
 
-    @AfterPermissionGranted(RC_WRING_STORAGE)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Now lets connect to the API
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+
+
+    }
+
+
     private void callAllPermission() {
-        if (!hasWringStoragePermission()) {
-            EasyPermissions.requestPermissions(
-                    this, "This is required permission...",
-                    RC_WRING_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO);
+        if (EasyPermissions.hasPermissions(MainActivity.this,
+                Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            callHomeApi();
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.all_permission),
+                    RC_HOME_SCREEN_PERMISSION,
+                    Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
 
+    private void callHomeApi() {
+        getLocation();
+
+    }
+
+    private void getLocation() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        // Create the LocationRequest object
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+    }
+
     private void setData() {
+        callAllPermission();
         setTextToSpeech();
         mainActivityDao = new MainActivityDao();
         setInputtypeAdepter();
-        setEmailDialog();
-        if (!SessionManager.isEmailSaved(MainActivity.this)) {
-            builder.show();
-        }
+
     }
 
     private void setTextToSpeech() {
@@ -207,19 +270,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     getCursorPosition();
                     mainActivityDao.startSpeak(MainActivity.this, intSpinnerPosition);
                     break;
-                case R.id.btnLogin:
-                    strEmail = editEmail.getText().toString().trim();
-                    if (strEmail.matches(emailPattern)) {
-                        builder.dismiss();
-                        SessionManager.saveEmail(MainActivity.this, true);
-                    } else {
-                        Toast.makeText(MainActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case R.id.tvCloseEmail:
-                    builder.dismiss();
-                    finish();
-                    break;
                 case R.id.rlEnter:
                     edtSpeakData.append("\n");
                     break;
@@ -263,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     break;
                 case R.id.rlTextToSpeech:
-                    GlobalMethods.showToast(MainActivity.this,"Coming soon");
+                    GlobalMethods.showToast(MainActivity.this, "Coming soon");
                     textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
                     setTextToSpeech();
                     break;
@@ -427,21 +477,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    private void setEmailDialog() {
-        builder = new AlertDialog.Builder(MainActivity.this).create();
-        builder.setCancelable(false);
-        builder.setCanceledOnTouchOutside(false);
-        View view = getLayoutInflater().inflate(R.layout.login_dialog, null);
-        //Get Ids
-        editEmail = view.findViewById(R.id.edtEmail);
-        btnLogin = view.findViewById(R.id.btnLogin);
-        tvCloseEmail = view.findViewById(R.id.tvCloseEmail);
-        //Set Listner
-        btnLogin.setOnClickListener(clickListener);
-        tvCloseEmail.setOnClickListener(clickListener);
-        builder.setView(view);
-    }
-
     private void getId() {
         try {
             image_save = findViewById(R.id.image_save);
@@ -563,19 +598,58 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 });
     }
 
-    private boolean hasWringStoragePermission() {
-        return EasyPermissions.hasPermissions(this, allPermissionArray);
-    }
-
-
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        Log.e("=>", "Permission granted " + requestCode);
-
+        switch (requestCode) {
+            case RC_HOME_SCREEN_PERMISSION:
+                callHomeApi();
+                break;
+        }
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         Log.e("=>", "Permission denide " + requestCode);
     }
+
+    // TODO: 31-12-2019 Location related stuff by Sakib START
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (location == null) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        } else {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+            Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {}
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("Error", "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
+        Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+    }
+
+
+    // TODO: 31-12-2019 Location related stuff by Sakib END
 }

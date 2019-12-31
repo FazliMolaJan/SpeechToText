@@ -17,7 +17,7 @@
 
     <!--    language id-->
     <string name="lang_id_hind">hi</string>
-    <string name="lang_id_gujarati">gu</string>
+    <string name="lang_id_gujarati">gu_IN</string>
     <string name="lang_id_bengali">bn</string>
     <string name="lang_id_english">en</string>
     <string name="lang_id_french">fr</string>
@@ -59,5 +59,6 @@
     <string name="speed_text_to_persion">Speech to Text (نوشته شده از سخنرانی)</string>
     <string name="speed_text_to_urdu">Speech to Text (تقرر سے لکھائی )</string>
     <string name="please_enter_value">Please enter value</string>
+    <string name="all_permission">all_permission</string>
 
 </resources>
