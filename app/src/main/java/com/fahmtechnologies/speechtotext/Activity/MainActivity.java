@@ -113,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         getId();
         setClickListerner();
         setData();
-        Log.e("=>", " Configured email" + GlobalMethods.getConfiguredEmail(MainActivity.this));
-
     }
 
     @Override
@@ -146,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.GET_ACCOUNTS)) {
             getLocation();
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.all_permission),
+            EasyPermissions.requestPermissions(this, getString(R.string.allow_permmision),
                     RC_HOME_SCREEN_PERMISSION,
                     Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -618,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        Log.e("=>", "Permission denide " + requestCode);
+        Log.e("=>", "Please allow all permissions" + requestCode);
     }
 
     // TODO: 31-12-2019 Location related stuff by Sakib START
