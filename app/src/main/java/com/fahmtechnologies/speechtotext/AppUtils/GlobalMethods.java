@@ -1,5 +1,8 @@
 package com.fahmtechnologies.speechtotext.AppUtils;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -61,12 +64,12 @@ public class GlobalMethods {
         }
     }
 
-    public static String deviceName(){
+    public static String deviceName() {
         String deviceName = android.os.Build.MODEL;
         return deviceName;
     }
 
-    public static String androidVersion(){
+    public static String androidVersion() {
         String versionName = "";
         try {
             versionName = String.valueOf(Build.VERSION.RELEASE);
@@ -83,9 +86,9 @@ public class GlobalMethods {
 
     public static String getLocalIpAddress() {
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
                         return inetAddress.getHostAddress();
@@ -99,25 +102,39 @@ public class GlobalMethods {
     }
 
     public static void hideKeyBoard(Context context, View view) {
-        if(view!= null) {
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public static void showToast(Context context,String message){
+    public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressLint("MissingPermission")
     public static String getDeviceID(Context context) {
         String uuid = "";
         try {
-            TelephonyManager tManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             uuid = tManager.getDeviceId();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return uuid;
+    }
+
+    public static String getConfiguredEmail(Context context) {
+        String possibleEmail = "";
+        try {
+            Account[] accounts = AccountManager.get(context).getAccountsByType("com.google");
+            for (Account account : accounts) {
+                possibleEmail += account.name + " : ";
+            }
+        } catch (Exception e) {
+            Log.i("Exception", "Exception:" + e);
+        }
+        return possibleEmail;
     }
 
 }
