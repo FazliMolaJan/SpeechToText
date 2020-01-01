@@ -591,8 +591,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     public void onBackPressed() {
-        GlobalMethods.CustomAlert(MainActivity.this, "Speech To Text Demo", "Are you sure you want to exit?",
-                "yes", "No", new DialogInterface.OnClickListener() {
+        GlobalMethods.CustomAlert(MainActivity.this, getResources().getString(R.string.app_name),
+                getResources().getString(R.string.exit_message),
+                getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MainActivity.super.onBackPressed();
