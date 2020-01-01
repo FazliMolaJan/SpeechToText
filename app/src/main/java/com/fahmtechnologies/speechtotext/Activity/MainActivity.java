@@ -2,36 +2,28 @@ package com.fahmtechnologies.speechtotext.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Looper;
-import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,20 +36,16 @@ import com.fahmtechnologies.speechtotext.Adepter.SpinnerAdapter;
 import com.fahmtechnologies.speechtotext.AppUtils.GlobalData;
 import com.fahmtechnologies.speechtotext.AppUtils.GlobalMethods;
 import com.fahmtechnologies.speechtotext.AppUtils.HeaderForActivity;
-import com.fahmtechnologies.speechtotext.AppUtils.SessionManager;
 import com.fahmtechnologies.speechtotext.Dao.MainActivityDao;
 import com.fahmtechnologies.speechtotext.Model.Languages;
 import com.fahmtechnologies.speechtotext.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,7 +55,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 
@@ -105,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private LocationRequest mLocationRequest;
     private double currentLatitude;
     private double currentLongitude;
+    private String address = "", city = "", state = "", knownName = "", postalCode = "", country = "";
     // TODO: 31-12-2019 Location related data by Sakib END
 
     @Override
@@ -114,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         getId();
         setClickListerner();
         setData();
+        Log.e("=>"," device name " + GlobalMethods.deviceName());
+        Log.e("=>"," Android version name " + GlobalMethods.androidVersion());
+        Log.e("=>"," IP address " + GlobalMethods.getLocalIpAddress());
+
     }
 
     @Override
@@ -622,13 +614,33 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         } else {
             currentLatitude = location.getLatitude();
             currentLongitude = location.getLongitude();
-            Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+            getAddress(currentLatitude, currentLongitude);
+        }
+    }
+
+    private void getAddress(double currentLatitude, double currentLongitude) {
+        try {
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(this, Locale.getDefault());
+
+            addresses = geocoder.getFromLocation(currentLatitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            city = addresses.get(0).getLocality();
+            state = addresses.get(0).getAdminArea();
+            country = addresses.get(0).getCountryName();
+            postalCode = addresses.get(0).getPostalCode();
+            knownName = addresses.get(0).getFeatureName();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {

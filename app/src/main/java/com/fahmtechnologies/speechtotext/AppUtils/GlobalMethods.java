@@ -3,17 +3,25 @@ package com.fahmtechnologies.speechtotext.AppUtils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fahmtechnologies.speechtotext.BuildConfig;
 import com.fahmtechnologies.speechtotext.R;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 public class GlobalMethods {
     public static void CustomAlert(Context context,
@@ -52,9 +60,41 @@ public class GlobalMethods {
         }
     }
 
+    public static String deviceName(){
+        String deviceName = android.os.Build.MODEL;
+        return deviceName;
+    }
+
+    public static String androidVersion(){
+        String versionName = "";
+        try {
+            versionName = String.valueOf(Build.VERSION.RELEASE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
     public static void showKeyboard(Context context, EditText etEditText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(etEditText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                        return inetAddress.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public static void hideKeyBoard(Context context, View view) {
