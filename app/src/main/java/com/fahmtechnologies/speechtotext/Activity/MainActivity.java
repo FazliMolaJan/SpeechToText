@@ -314,8 +314,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.rlTextToSpeech:
                     GlobalMethods.showToast(MainActivity.this, "Coming soon");
-                    textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
-                    setTextToSpeech();
+                    //textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
+                    //setTextToSpeech();
                     break;
                 case R.id.rlWhatsAppShare:
                     shareViaWhatsApp();
