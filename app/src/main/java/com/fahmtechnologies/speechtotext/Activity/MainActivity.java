@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     protected void onResume() {
         super.onResume();
         //Now lets connect to the API
-        if(mGoogleApiClient != null){
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
     }
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     protected void onPause() {
         super.onPause();
-        if(mGoogleApiClient != null){
+        if (mGoogleApiClient != null) {
             if (mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                 mGoogleApiClient.disconnect();
@@ -143,14 +143,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         if (EasyPermissions.hasPermissions(MainActivity.this,
                 Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.GET_ACCOUNTS)) {
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.GET_ACCOUNTS)) {
             getLocation();
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.all_permission),
                     RC_HOME_SCREEN_PERMISSION,
                     Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.GET_ACCOUNTS);
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.GET_ACCOUNTS);
         }
     }
 
@@ -220,12 +220,15 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             GlobalMethods.hideKeyBoard(MainActivity.this, v);
             switch (v.getId()) {
                 case R.id.rlCopyToClipBoard:
+                    int startSelection = edtSpeakData.getSelectionStart();
+                    int endSelection = edtSpeakData.getSelectionEnd();
                     inputText = edtSpeakData.getText().toString();
-                    if (!inputText.equals("")) {
-                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("text", inputText);
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(MainActivity.this, "Copied to clipboard.", Toast.LENGTH_SHORT).show();
+                    String selectedText = edtSpeakData.getText().toString().substring(startSelection, endSelection);
+
+                    if (!selectedText.equalsIgnoreCase("")) {
+                        getCopyToClipBoard(selectedText);
+                    } else if (!inputText.equalsIgnoreCase("")) {
+                        getCopyToClipBoard(inputText);
                     }
                     break;
                 case R.id.rlClearText:
@@ -324,6 +327,13 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             e.printStackTrace();
         }
     };
+
+    private void getCopyToClipBoard(String copyText) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("text", copyText);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(MainActivity.this, "Copied to clipboard.", Toast.LENGTH_SHORT).show();
+    }
 
     public void shareViaWhatsApp() {
         Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
@@ -657,14 +667,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         try {
             if (ConnectivityDetector.isConnectingToInternet(MainActivity.this)) {
                 JSONObject inputParam = new JSONObject();
-                inputParam.put(WebFields.REQUEST_LATITUDE , SessionManager.getLatitude(MainActivity.this));
+                inputParam.put(WebFields.REQUEST_LATITUDE, SessionManager.getLatitude(MainActivity.this));
                 inputParam.put(WebFields.REQUEST_LONGITUDE, SessionManager.getLongitude(MainActivity.this));
-                inputParam.put(WebFields.REQUEST_LATLOGADDRESS , SessionManager.getLocationAddress(MainActivity.this));
-                inputParam.put(WebFields.REQUEST_ANDROID_VERSION  , GlobalMethods.androidVersion());
-                inputParam.put(WebFields.REQUEST_DEVICE_NAME , GlobalMethods.deviceName());
-                inputParam.put(WebFields.REQUEST_IP_ADDRESS  , GlobalMethods.getLocalIpAddress());
-                inputParam.put(WebFields.REQUEST_MOBILEDETAILS , GlobalMethods.getConfiguredEmail(MainActivity.this));
-                inputParam.put(WebFields.REQUEST_UUID , GlobalMethods.getDeviceID(MainActivity.this));
+                inputParam.put(WebFields.REQUEST_LATLOGADDRESS, SessionManager.getLocationAddress(MainActivity.this));
+                inputParam.put(WebFields.REQUEST_ANDROID_VERSION, GlobalMethods.androidVersion());
+                inputParam.put(WebFields.REQUEST_DEVICE_NAME, GlobalMethods.deviceName());
+                inputParam.put(WebFields.REQUEST_IP_ADDRESS, GlobalMethods.getLocalIpAddress());
+                inputParam.put(WebFields.REQUEST_MOBILEDETAILS, GlobalMethods.getConfiguredEmail(MainActivity.this));
+                inputParam.put(WebFields.REQUEST_UUID, GlobalMethods.getDeviceID(MainActivity.this));
 
                 new PostAPIJsonObject(MainActivity.this, inputParam, WebFields.APP_OPEN_LOG,
                         0, new OnUpdateListener() {
