@@ -621,7 +621,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     // TODO: 31-12-2019 Location related stuff by Sakib START
-
     @Override
     public void onConnected(Bundle bundle) {
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
