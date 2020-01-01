@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Environment;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -106,6 +107,17 @@ public class GlobalMethods {
 
     public static void showToast(Context context,String message){
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static String getDeviceID(Context context) {
+        String uuid = "";
+        try {
+            TelephonyManager tManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+            uuid = tManager.getDeviceId();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return uuid;
     }
 
 }

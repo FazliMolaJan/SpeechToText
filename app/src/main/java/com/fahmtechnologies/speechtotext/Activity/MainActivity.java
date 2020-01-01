@@ -33,17 +33,28 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fahmtechnologies.speechtotext.Adepter.SpinnerAdapter;
+import com.fahmtechnologies.speechtotext.AppUtils.AlertDialogUtility;
+import com.fahmtechnologies.speechtotext.AppUtils.ConnectivityDetector;
 import com.fahmtechnologies.speechtotext.AppUtils.GlobalData;
 import com.fahmtechnologies.speechtotext.AppUtils.GlobalMethods;
 import com.fahmtechnologies.speechtotext.AppUtils.HeaderForActivity;
+import com.fahmtechnologies.speechtotext.AppUtils.LogM;
+import com.fahmtechnologies.speechtotext.AppUtils.SessionManager;
 import com.fahmtechnologies.speechtotext.Dao.MainActivityDao;
 import com.fahmtechnologies.speechtotext.Model.Languages;
+import com.fahmtechnologies.speechtotext.Network.GetAPIGetJsonObject;
+import com.fahmtechnologies.speechtotext.Network.OnUpdateListener;
+import com.fahmtechnologies.speechtotext.Network.PostAPIJsonObject;
+import com.fahmtechnologies.speechtotext.Network.WebFields;
 import com.fahmtechnologies.speechtotext.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -102,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         getId();
         setClickListerner();
         setData();
-        Log.e("=>"," device name " + GlobalMethods.deviceName());
-        Log.e("=>"," Android version name " + GlobalMethods.androidVersion());
-        Log.e("=>"," IP address " + GlobalMethods.getLocalIpAddress());
+        Log.e("=>", " device name " + GlobalMethods.deviceName());
+        Log.e("=>", " Android version name " + GlobalMethods.androidVersion());
+        Log.e("=>", " IP address " + GlobalMethods.getLocalIpAddress());
 
     }
 
@@ -132,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
-            callHomeApi();
+            getLocation();
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.all_permission),
                     RC_HOME_SCREEN_PERMISSION,
@@ -140,11 +151,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION);
         }
-    }
-
-    private void callHomeApi() {
-        getLocation();
-
     }
 
     private void getLocation() {
@@ -594,7 +600,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         switch (requestCode) {
             case RC_HOME_SCREEN_PERMISSION:
-                callHomeApi();
+                getLocation();
                 break;
         }
     }
@@ -632,7 +638,45 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             country = addresses.get(0).getCountryName();
             postalCode = addresses.get(0).getPostalCode();
             knownName = addresses.get(0).getFeatureName();
+
+            String fullAddress = address + " " + city + " " + state + " " + country + " " + postalCode + " " + knownName;
+
+            SessionManager.setLatitute(MainActivity.this, String.valueOf(currentLatitude));
+            SessionManager.setLongitude(MainActivity.this, String.valueOf(currentLongitude));
+            SessionManager.setLocationAddress(MainActivity.this, fullAddress);
+
+            callHomeScreenAPI();
+
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callHomeScreenAPI() {
+        try {
+            if (ConnectivityDetector.isConnectingToInternet(MainActivity.this)) {
+                JSONObject inputParam = new JSONObject();
+                inputParam.put(WebFields.REQUEST_LATITUDE , SessionManager.getLatitude(MainActivity.this));
+                inputParam.put(WebFields.REQUEST_LONGITUDE, SessionManager.getLongitude(MainActivity.this));
+                inputParam.put(WebFields.REQUEST_LATLOGADDRESS , SessionManager.getLocationAddress(MainActivity.this));
+                inputParam.put(WebFields.REQUEST_ANDROID_VERSION  , GlobalMethods.androidVersion());
+                inputParam.put(WebFields.REQUEST_DEVICE_NAME , GlobalMethods.deviceName());
+                inputParam.put(WebFields.REQUEST_IP_ADDRESS  , GlobalMethods.getLocalIpAddress());
+                inputParam.put(WebFields.REQUEST_MOBILEDETAILS , "");
+                inputParam.put(WebFields.REQUEST_UUID , GlobalMethods.getDeviceID(MainActivity.this));
+
+                new PostAPIJsonObject(MainActivity.this, inputParam, WebFields.APP_OPEN_LOG,
+                        0, new OnUpdateListener() {
+                    @Override
+                    public void onUpdateComplete(JSONObject jsonObject, boolean isSuccess) {
+                        LogM.Loge("=> location added successfully !!! ");
+                    }
+                }).execute();
+
+            } else {
+                AlertDialogUtility.showInternetAlert(MainActivity.this);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -659,7 +703,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void onLocationChanged(Location location) {
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
-        Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+        getAddress(currentLatitude, currentLongitude);
     }
 
 
