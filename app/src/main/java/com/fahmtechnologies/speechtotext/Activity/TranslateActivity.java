@@ -179,6 +179,7 @@ public class TranslateActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(anError.getErrorBody());
                             AlertDialogUtility.showToast(TranslateActivity.this, jsonObject.getString("message"));
+                            edtToLanguage.setText("");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
