@@ -11,7 +11,9 @@ import android.content.IntentSender;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
@@ -62,8 +64,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -314,7 +318,17 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.rlTextToSpeech:
                     //GlobalMethods.showToast(MainActivity.this, "Coming soon");
-                    textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
+                    //textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
+                        textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, bundle, null);
+                    } else {
+                        HashMap<String, String> param = new HashMap<>();
+                        param.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_MUSIC));
+                        textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, param);
+                    }
                     setTextToSpeech();
                     break;
                 case R.id.rlWhatsAppShare:

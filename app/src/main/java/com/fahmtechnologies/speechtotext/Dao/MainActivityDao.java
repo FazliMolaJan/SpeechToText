@@ -18,6 +18,7 @@ public class MainActivityDao {
 
     private ArrayList<Languages> alLang;
 
+    // TODO: 03-01-2020 Use two difference array for Gujarati and Urdu language key is differ for Transalate and Speech by Sakib START
     public List<Languages> getLanguesForSpeech(Context context){
         alLang = new ArrayList<>();
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_gujarati_india),context.getResources().getString(R.string.gujarati) ));
@@ -45,7 +46,7 @@ public class MainActivityDao {
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu_), context.getResources().getString(R.string.urdu)));
         return alLang;
     }
-
+    // TODO: 03-01-2020 Use two difference array for Gujarati and Urdu language key is differ for Transalate and Speech by Sakib END
 
     public void startSpeak(final Context context, int intSpinnerPosition){
         if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.gujarati))) {
