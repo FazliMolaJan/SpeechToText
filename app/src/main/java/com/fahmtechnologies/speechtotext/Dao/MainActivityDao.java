@@ -18,59 +18,38 @@ public class MainActivityDao {
 
     private ArrayList<Languages> alLang;
 
-    public List<Languages> setLanguageArray(Context context){
+    public List<Languages> getLanguesForSpeech(Context context){
         alLang = new ArrayList<>();
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_gujarati_india),context.getResources().getString(R.string.gujarati) ));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_hind), context.getResources().getString(R.string.hindi) ));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_english), context.getResources().getString(R.string.english)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_bengali),context.getResources().getString(R.string.bengali) ));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_french), context.getResources().getString(R.string.french)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_Swahili), context.getResources().getString(R.string.swahili)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_arebic), context.getResources().getString(R.string.arabic)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_persian), context.getResources().getString(R.string.persian)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu_india), context.getResources().getString(R.string.urdu)));
+        return alLang;
+    }
 
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_gujarati),
-                context.getResources().getString(R.string.gujarati)
-                ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_hind),
-                context.getResources().getString(R.string.hindi)
-        ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_english),
-                context.getResources().getString(R.string.english)
-        ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_bengali),
-                context.getResources().getString(R.string.bengali)
-        ));
-
-//        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_mrathi),
-//                context.getResources().getString(R.string.marathi)
-//        ));
-//        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_kannada),
-//                context.getResources().getString(R.string.kannada)
-//        ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_french),
-                context.getResources().getString(R.string.french)
-        ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_Swahili),
-                context.getResources().getString(R.string.swahili)
-        ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_arebic),
-                context.getResources().getString(R.string.arabic)
-        ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_persian),
-                context.getResources().getString(R.string.persian)
-        ));
-
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu),
-                context.getResources().getString(R.string.urdu)
-        ));
-
+    public List<Languages> getLanguesForTranslate(Context context){
+        alLang = new ArrayList<>();
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_gujarati),context.getResources().getString(R.string.gujarati) ));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_hind), context.getResources().getString(R.string.hindi) ));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_english), context.getResources().getString(R.string.english)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_bengali),context.getResources().getString(R.string.bengali) ));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_french), context.getResources().getString(R.string.french)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_Swahili), context.getResources().getString(R.string.swahili)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_arebic), context.getResources().getString(R.string.arabic)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_persian), context.getResources().getString(R.string.persian)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu_), context.getResources().getString(R.string.urdu)));
         return alLang;
     }
 
 
     public void startSpeak(final Context context, int intSpinnerPosition){
         if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.gujarati))) {
-            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_gujarati),context);
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_gujarati_india),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.hindi))) {
             setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_hind),context);
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.bengali))) {
@@ -88,7 +67,7 @@ public class MainActivityDao {
         } else if (alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.persian))) {
             setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_persian),context);
         } else if(alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.urdu))){
-            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_urdu),context);
+            setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_urdu_india),context);
         } else if(alLang.get(intSpinnerPosition).getStrLaguages().equalsIgnoreCase(context.getResources().getString(R.string.swahili))){
             setSpeechToTextIntent(context.getResources().getString(R.string.lang_id_Swahili),context);
         }

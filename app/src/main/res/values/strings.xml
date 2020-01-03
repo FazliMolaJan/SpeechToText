@@ -17,7 +17,8 @@
 
     <!--    language id-->
     <string name="lang_id_hind">hi</string>
-    <string name="lang_id_gujarati">gu_IN</string>
+    <string name="lang_id_gujarati_india">gu_IN</string>
+    <string name="lang_id_gujarati">gu</string>
     <string name="lang_id_bengali">bn</string>
     <string name="lang_id_english">en</string>
     <string name="lang_id_french">fr</string>
@@ -27,7 +28,8 @@
     <string name="lang_id_kannada">kn</string>
     <string name="lang_id_arebic">ar</string>
     <string name="lang_id_persian">fa</string>
-    <string name="lang_id_urdu">ur-IN</string>
+    <string name="lang_id_urdu_">ur</string>
+    <string name="lang_id_urdu_india">ur-IN</string>
     <string name="lang_id_Swahili">sw</string>
 
 

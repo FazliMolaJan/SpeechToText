@@ -76,7 +76,7 @@ public class TranslateActivity extends AppCompatActivity {
     private void setAllDropDown() {
         alLanguage = new ArrayList<>();
         mainActivityDao = new MainActivityDao();
-        alLanguage.addAll(mainActivityDao.setLanguageArray(TranslateActivity.this));
+        alLanguage.addAll(mainActivityDao.getLanguesForTranslate(TranslateActivity.this));
         adapterFromLang = new SpinnerAdapter(TranslateActivity.this, alLanguage);
 
         spinner_language_to.setAdapter(adapterFromLang);

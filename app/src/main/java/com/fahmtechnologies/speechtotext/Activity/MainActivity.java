@@ -511,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     private void setInputtypeAdepter() {
         alLang = new ArrayList<>();
-        alLang.addAll(mainActivityDao.setLanguageArray(MainActivity.this));
+        alLang.addAll(mainActivityDao.getLanguesForSpeech(MainActivity.this));
 
         langAdepter = new SpinnerAdapter(MainActivity.this, alLang);
         sprLang.setAdapter((android.widget.SpinnerAdapter) langAdepter);
