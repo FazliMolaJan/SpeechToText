@@ -27,6 +27,7 @@ import com.fahmtechnologies.speechtotext.R;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class TranslateActivity extends AppCompatActivity {
     private void setListner() {
         try {
             btnTranslante.setOnClickListener(onClickListener);
-            headerTranslateScreen.tvBack.setOnClickListener(onClickListener);
+//            headerTranslateScreen.tvBack.setOnClickListener(onClickListener);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,9 +116,9 @@ public class TranslateActivity extends AppCompatActivity {
                         AlertDialogUtility.showToast(TranslateActivity.this, "Please enter data");
                     }
                     break;
-                case R.id.headerTranslateScreen:
-                    finish();
-                    break;
+//                case R.id.headerTranslateScreen:
+//                    finish();
+//                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,9 +152,10 @@ public class TranslateActivity extends AppCompatActivity {
 
 
     private void callAPI(String url) {
+        LogM.Loge("=> Full URL " + url);
         AndroidNetworking.get(url)
                 .setTag("test")
-                .setPriority(Priority.LOW)
+                .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -164,6 +166,8 @@ public class TranslateActivity extends AppCompatActivity {
                                 String data = array.toString();
                                 data = data.replaceAll("[\\p{Ps}\\p{Pe}]", "");
                                 edtToLanguage.setText(data);
+                            }else {
+                                AlertDialogUtility.showToast(TranslateActivity.this,response.getString("message"));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -172,7 +176,12 @@ public class TranslateActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError anError) {
-                        AlertDialogUtility.showToast(TranslateActivity.this, anError.getMessage());
+                        try {
+                            JSONObject jsonObject = new JSONObject(anError.getErrorBody());
+                            AlertDialogUtility.showToast(TranslateActivity.this, jsonObject.getString("message"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
