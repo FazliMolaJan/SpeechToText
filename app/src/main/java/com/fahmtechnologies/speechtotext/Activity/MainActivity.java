@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private String address = "", city = "", state = "", knownName = "", postalCode = "", country = "";
     // TODO: 31-12-2019 Location related data by Sakib END
 
+    private int ttpResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +139,16 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 mGoogleApiClient.disconnect();
             }
 
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Don't forget to shutdown tts!
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
         }
     }
 
@@ -172,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     private void setData() {
         callAllPermission();
-        setTextToSpeech();
         mainActivityDao = new MainActivityDao();
         setInputtypeAdepter();
 
@@ -185,36 +196,45 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 if (status != TextToSpeech.ERROR) {
                     switch (alLang.get(intSpinnerPosition).getStrLaguages()) {
                         case "Urdu":
-                            textToSpeech.setLanguage(new Locale("urd"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("ur", "IN"));
                             break;
                         case "Gujarati":
-                            textToSpeech.setLanguage(new Locale("gu"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("gu", "IN"));
                             break;
                         case "Hindi":
-                            textToSpeech.setLanguage(new Locale("hi"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("hi","IN"));
                             break;
                         case "Bengali":
-                            textToSpeech.setLanguage(new Locale("bn"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("bn","IN"));
                             break;
                         case "English":
-                            textToSpeech.setLanguage(Locale.US);
+                            ttpResult = textToSpeech.setLanguage(Locale.US);
                             break;
                         case "French":
-                            textToSpeech.setLanguage(Locale.FRENCH);
+                            ttpResult = textToSpeech.setLanguage(Locale.FRENCH);
                             break;
                         case "Arabic":
-                            textToSpeech.setLanguage(new Locale("ar"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("ar","IQ"));
                             break;
                         case "Persian":
-                            textToSpeech.setLanguage(new Locale("fa"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("fa","IR" ));
                             break;
                         default:
-                            textToSpeech.setLanguage(Locale.US);
+                            ttpResult = textToSpeech.setLanguage(Locale.US);
                             break;
                     }
                 }
             }
         });
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        if (ttpResult == TextToSpeech.LANG_MISSING_DATA || ttpResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+            Toast.makeText(MainActivity.this, "This language is not supported", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(MainActivity.this, "This language is supported !!!!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private View.OnClickListener clickListener = (v) -> {
@@ -319,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 case R.id.rlTextToSpeech:
                     //GlobalMethods.showToast(MainActivity.this, "Coming soon");
                     //textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
-
+                    setTextToSpeech();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         Bundle bundle = new Bundle();
                         bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
@@ -329,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         param.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_MUSIC));
                         textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, param);
                     }
-                    setTextToSpeech();
                     break;
                 case R.id.rlWhatsAppShare:
                     shareViaWhatsApp();
