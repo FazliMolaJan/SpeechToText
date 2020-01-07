@@ -14,6 +14,7 @@ import android.location.Location;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import static com.github.isabsent.filepicker.SimpleFilePickerDialog.CompositeMode.FOLDER_ONLY_SINGLE_CHOICE;
 import com.fahmtechnologies.speechtotext.Adepter.SpinnerAdapter;
 import com.fahmtechnologies.speechtotext.AppUtils.AlertDialogUtility;
 import com.fahmtechnologies.speechtotext.AppUtils.ConnectivityDetector;
@@ -49,15 +50,11 @@ import com.fahmtechnologies.speechtotext.Network.OnUpdateListener;
 import com.fahmtechnologies.speechtotext.Network.PostAPIJsonObject;
 import com.fahmtechnologies.speechtotext.Network.WebFields;
 import com.fahmtechnologies.speechtotext.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
+import com.github.isabsent.filepicker.SimpleFilePickerDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,8 +70,8 @@ import java.util.Objects;
 import pub.devrel.easypermissions.EasyPermissions;
 
 
-public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks , SimpleFilePickerDialog.InteractionListenerString,
+        SimpleFilePickerDialog.InteractionListenerInt {
 
     public static final int REQ_CODE_SPEECH_INPUT = 1;
     private Spinner sprLang;
@@ -87,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private TextView tvCloseEmail, tvQuestMark, tvDoubleQuote, tvSingleQuote, tvFullStop, tvComma;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+", Filename, inputText, strEmail;
     private int intCursonPosition = 0, intSpinnerPosition = 0;
-    private static final int RC_HOME_SCREEN_PERMISSION = 123;
+    //    private static final int RC_HOME_SCREEN_PERMISSION = 123;
     private String[] allPermissionArray = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
     private boolean isSingleQuoteStart, isDoubleQuoteStart;
     private String WHITE_SPACE = " ";
@@ -99,47 +96,23 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private Handler handler;
     private Runnable runnable;
     private int DELETE_CHARACTER_INTERVAL = 100; //miliseconds
-
-    // TODO: 31-12-2019 Location related data by Sakib START
-    //Define a request code to send to Google Play services
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
-    private double currentLatitude;
-    private double currentLongitude;
-    private String address = "", city = "", state = "", knownName = "", postalCode = "", country = "";
-    // TODO: 31-12-2019 Location related data by Sakib END
-
     private int ttpResult;
+
+    // TODO: 07-01-2020 Run time permission by Sakib START
+    private final int RC_RECORD_VOICE = 12;
+    private final int RC_STORAGE_PERMISSION = 14;
+    // TODO: 07-01-2020 Run time permission by Sakib END
+
+    private static final String PICK_DIALOG = "PICK_DIALOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         getId();
         setClickListerner();
         setData();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //Now lets connect to the API
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mGoogleApiClient != null) {
-            if (mGoogleApiClient.isConnected()) {
-                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-                mGoogleApiClient.disconnect();
-            }
-
-        }
     }
 
     @Override
@@ -154,39 +127,25 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
 
     private void callAllPermission() {
-        if (EasyPermissions.hasPermissions(MainActivity.this,
-                Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.GET_ACCOUNTS)) {
-            getLocation();
-        } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.allow_permmision),
-                    RC_HOME_SCREEN_PERMISSION,
-                    Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.GET_ACCOUNTS);
-        }
-    }
-
-    private void getLocation() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        // Create the LocationRequest object
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+//        if (EasyPermissions.hasPermissions(MainActivity.this,
+//                Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
+//                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.GET_ACCOUNTS)) {
+//            getLocation();
+//        } else {
+//            EasyPermissions.requestPermissions(this, getString(R.string.allow_permmision),
+//                    RC_HOME_SCREEN_PERMISSION,
+//                    Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                    Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_COARSE_LOCATION,
+//                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.GET_ACCOUNTS);
+//        }
     }
 
     private void setData() {
         callAllPermission();
         mainActivityDao = new MainActivityDao();
         setInputtypeAdepter();
-        setTextToSpeech();
+        //setTextToSpeech();
     }
 
     private void setTextToSpeech() {
@@ -202,10 +161,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             ttpResult = textToSpeech.setLanguage(new Locale("gu", "IN"));
                             break;
                         case "Hindi":
-                            ttpResult = textToSpeech.setLanguage(new Locale("hi","IN"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("hi", "IN"));
                             break;
                         case "Bengali":
-                            ttpResult = textToSpeech.setLanguage(new Locale("bn","IN"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("bn", "IN"));
                             break;
                         case "English":
                             ttpResult = textToSpeech.setLanguage(Locale.US);
@@ -214,10 +173,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             ttpResult = textToSpeech.setLanguage(Locale.FRENCH);
                             break;
                         case "Arabic":
-                            ttpResult = textToSpeech.setLanguage(new Locale("ar","EG"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("ar", "EG"));
                             break;
                         case "Persian":
-                            ttpResult = textToSpeech.setLanguage(new Locale("fa" ));
+                            ttpResult = textToSpeech.setLanguage(new Locale("fa"));
                             break;
                         default:
                             ttpResult = textToSpeech.setLanguage(Locale.US);
@@ -274,12 +233,13 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     if (edtSpeakData.getText().toString().length() <= 0) {
                         Toast.makeText(MainActivity.this, "Please enter text", Toast.LENGTH_SHORT).show();
                     } else {
-                        Calendar cal = Calendar.getInstance();
-                        Date date = cal.getTime();
-                        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-                        Filename = dateFormat.format(date) + ".txt";
-                        inputText = edtSpeakData.getText().toString();
-                        GlobalMethods.writeFiles(MainActivity.this, Filename, inputText);
+                        if (hasRecordPermission()) {
+                            saveUserText();
+                        } else {
+                            EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.storage_permission),
+                                    RC_STORAGE_PERMISSION,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        }
                     }
                     break;
                 case R.id.image_Share:
@@ -294,8 +254,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     break;
                 case R.id.ivStartSpeak:
-                    getCursorPosition();
-                    mainActivityDao.startSpeak(MainActivity.this, intSpinnerPosition);
+                    if (hasRecordPermission()) {
+                        getCursorPosition();
+                        mainActivityDao.startSpeak(MainActivity.this, intSpinnerPosition);
+                    } else {
+                        EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.record_permission),
+                                RC_RECORD_VOICE,
+                                Manifest.permission.RECORD_AUDIO);
+                    }
                     break;
                 case R.id.rlEnter:
                     edtSpeakData.append("\n");
@@ -340,18 +306,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     break;
                 case R.id.rlTextToSpeech:
-                    if (ttpResult == TextToSpeech.LANG_MISSING_DATA || ttpResult == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        AlertDialogUtility.showSingleAlert(MainActivity.this, getString(R.string.lang_not_support), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-                    else{
-                        textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
-                        Toast.makeText(MainActivity.this, "This language is supported !!!!", Toast.LENGTH_SHORT).show();
-                    }
+                    AlertDialogUtility.showToast(MainActivity.this,getResources().getString(R.string.coming_soon));
+//                    if (ttpResult == TextToSpeech.LANG_MISSING_DATA || ttpResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+//                        AlertDialogUtility.showSingleAlert(MainActivity.this, getString(R.string.lang_not_support), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                    } else {
+//                        textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
+//                        Toast.makeText(MainActivity.this, "This language is supported !!!!", Toast.LENGTH_SHORT).show();
+//                    }
                     break;
                 case R.id.rlWhatsAppShare:
                     shareViaWhatsApp();
@@ -361,6 +327,27 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             e.printStackTrace();
         }
     };
+
+    private void saveUserText() {
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Filename = dateFormat.format(date) + ".txt";
+        inputText = edtSpeakData.getText().toString();
+        GlobalMethods.writeFiles(MainActivity.this, Filename, inputText);
+
+//        final String rootPath = getExternalFilesDir(null).getAbsolutePath() + "/Speech To Text" ;
+//        showListItemDialog("Choose folder to save data ", rootPath, FOLDER_ONLY_SINGLE_CHOICE, PICK_DIALOG);
+
+    }
+
+    private boolean hasRecordPermission() {
+        return EasyPermissions.hasPermissions(this, Manifest.permission.RECORD_AUDIO);
+    }
+
+    private boolean hasStoragePermission() {
+        return EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
 
     private void getCopyToClipBoard(String copyText) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -557,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     intSpinnerPosition = i;
-                    setTextToSpeech();
+                    //setTextToSpeech();
                     if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.gujarati))) {
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.gujarati));
                     } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.hindi))) {
@@ -624,6 +611,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                 }
                 break;
+            case 7:
+                if(resultCode == RESULT_OK){
+                    String PathHolder = data.getData().getPath();
+                    LogM.Loge("=> Full path " + emailPattern);
+                }
+                break;
         }
     }
 
@@ -646,8 +639,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         switch (requestCode) {
-            case RC_HOME_SCREEN_PERMISSION:
-                getLocation();
+            case RC_RECORD_VOICE:
+                getCursorPosition();
+                mainActivityDao.startSpeak(MainActivity.this, intSpinnerPosition);
+                break;
+            case RC_STORAGE_PERMISSION:
+                saveUserText();
                 break;
         }
     }
@@ -657,46 +654,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         Log.e("=>", "Please allow all permissions" + requestCode);
     }
 
-    // TODO: 31-12-2019 Location related stuff by Sakib START
-    @Override
-    public void onConnected(Bundle bundle) {
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (location == null) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        } else {
-            currentLatitude = location.getLatitude();
-            currentLongitude = location.getLongitude();
-            getAddress(currentLatitude, currentLongitude);
-        }
-    }
 
-    private void getAddress(double currentLatitude, double currentLongitude) {
-        try {
-            Geocoder geocoder;
-            List<Address> addresses;
-            geocoder = new Geocoder(this, Locale.getDefault());
-
-            addresses = geocoder.getFromLocation(currentLatitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            city = addresses.get(0).getLocality();
-            state = addresses.get(0).getAdminArea();
-            country = addresses.get(0).getCountryName();
-            postalCode = addresses.get(0).getPostalCode();
-            knownName = addresses.get(0).getFeatureName();
-
-            String fullAddress = address + " " + city + " " + state + " " + country + " " + postalCode + " " + knownName;
-
-            SessionManager.setLatitute(MainActivity.this, String.valueOf(currentLatitude));
-            SessionManager.setLongitude(MainActivity.this, String.valueOf(currentLongitude));
-            SessionManager.setLocationAddress(MainActivity.this, fullAddress);
-
-            callHomeScreenAPI();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void callHomeScreenAPI() {
         try {
@@ -729,29 +687,58 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void showListItemDialog(int titleResId, String folderPath, SimpleFilePickerDialog.CompositeMode mode, String dialogTag) {
+        SimpleFilePickerDialog.build(folderPath, mode)
+                .title(titleResId)
+//                .neut("hoch")    //Some customization if you need
+//                .neg("eröffnen")
+//                .pos("wählen")
+//                .choiceMin(1);
+//                .filterable(true, true)
+                .show(this, dialogTag);
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (connectionResult.hasResolution()) {
-            try {
-                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
-            } catch (IntentSender.SendIntentException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.e("Error", "Location services connection failed with code " + connectionResult.getErrorCode());
+    public void showListItemDialog(String title, String folderPath, SimpleFilePickerDialog.CompositeMode mode, String dialogTag) {
+        SimpleFilePickerDialog.build(folderPath, mode)
+                .title(title)
+//                .neut("hoch")    //Some customization if you need
+//                .neg("eröffnen")
+//                .pos("wählen")
+//                .choiceMin(1);
+//                .filterable(true, true)
+                .show(this, dialogTag);
+    }
+
+    @Override
+    public boolean onResult(@NonNull String dialogTag, int which, @NonNull Bundle extras) {
+        switch (dialogTag) {
+            case PICK_DIALOG:
+                if (extras.containsKey(SimpleFilePickerDialog.SELECTED_SINGLE_PATH)) {
+                    String selectedSinglePath = extras.getString(SimpleFilePickerDialog.SELECTED_SINGLE_PATH);
+                    Toast.makeText(this, "Path selected:\n" + selectedSinglePath, Toast.LENGTH_LONG).show();
+                    Log.e("=>","selectedPathsString " + selectedSinglePath);
+                } else if (extras.containsKey(SimpleFilePickerDialog.SELECTED_PATHS)){
+                    List<String> selectedPaths = extras.getStringArrayList(SimpleFilePickerDialog.SELECTED_PATHS);
+                    showSelectedPathsToast(selectedPaths);
+                }
+                break;
+//            case PICK_DIALOG_OTHER:
+//                //Do what you want here
+//                break;
+        }
+        return false;
+    }
+
+    private void showSelectedPathsToast(List<String> selectedPaths){
+        if (selectedPaths != null && !selectedPaths.isEmpty()){
+            String selectedPathsString = "\n";
+            for (String path : selectedPaths)
+                selectedPathsString += path + "\n";
+            Toast.makeText(this, "Paths selected:" + selectedPathsString, Toast.LENGTH_LONG).show();
+
+            Log.e("=>","selectedPathsString " + selectedPathsString);
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        currentLatitude = location.getLatitude();
-        currentLongitude = location.getLongitude();
-        getAddress(currentLatitude, currentLongitude);
-    }
-
-
-    // TODO: 31-12-2019 Location related stuff by Sakib END
 }

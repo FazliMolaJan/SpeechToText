@@ -49,7 +49,8 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6' //For Dimention
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     //For get current location
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
+//    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.github.isabsent:filepicker:1.1.01'
 
 
 }
