@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         callAllPermission();
         mainActivityDao = new MainActivityDao();
         setInputtypeAdepter();
-
+        setTextToSpeech();
     }
 
     private void setTextToSpeech() {
@@ -214,10 +214,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             ttpResult = textToSpeech.setLanguage(Locale.FRENCH);
                             break;
                         case "Arabic":
-                            ttpResult = textToSpeech.setLanguage(new Locale("ar","IQ"));
+                            ttpResult = textToSpeech.setLanguage(new Locale("ar","EG"));
                             break;
                         case "Persian":
-                            ttpResult = textToSpeech.setLanguage(new Locale("fa","IR" ));
+                            ttpResult = textToSpeech.setLanguage(new Locale("fa" ));
                             break;
                         default:
                             ttpResult = textToSpeech.setLanguage(Locale.US);
@@ -226,15 +226,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
             }
         });
-
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-        if (ttpResult == TextToSpeech.LANG_MISSING_DATA || ttpResult == TextToSpeech.LANG_NOT_SUPPORTED) {
-            Toast.makeText(MainActivity.this, "This language is not supported", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(MainActivity.this, "This language is supported !!!!", Toast.LENGTH_SHORT).show();
-        }
+//        if (ttpResult == TextToSpeech.LANG_MISSING_DATA || ttpResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+//            Toast.makeText(MainActivity.this, "This language is not supported", Toast.LENGTH_SHORT).show();
+//            AlertDialogUtility.showConfirmAlert(MainActivity.this, "", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//
+//                }
+//            });
+//        }
+//        else{
+//            Toast.makeText(MainActivity.this, "This language is supported !!!!", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private View.OnClickListener clickListener = (v) -> {
@@ -337,17 +340,17 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     break;
                 case R.id.rlTextToSpeech:
-                    //GlobalMethods.showToast(MainActivity.this, "Coming soon");
-                    //textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
-                    setTextToSpeech();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_MUSIC);
-                        textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, bundle, null);
-                    } else {
-                        HashMap<String, String> param = new HashMap<>();
-                        param.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_MUSIC));
-                        textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, param);
+                    if (ttpResult == TextToSpeech.LANG_MISSING_DATA || ttpResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        AlertDialogUtility.showSingleAlert(MainActivity.this, getString(R.string.lang_not_support), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                    else{
+                        textToSpeech.speak(edtSpeakData.getText().toString().trim(), TextToSpeech.QUEUE_FLUSH, null);
+                        Toast.makeText(MainActivity.this, "This language is supported !!!!", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case R.id.rlWhatsAppShare:
@@ -554,6 +557,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     intSpinnerPosition = i;
+                    setTextToSpeech();
                     if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.gujarati))) {
                         tvHeaderForActivity.tvActivityName.setText(getResources().getString(R.string.gujarati));
                     } else if (alLang.get(i).getStrLaguages().equalsIgnoreCase(getResources().getString(R.string.hindi))) {

@@ -65,5 +65,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="exit_message">Are you sure you want to exit?</string>
+    <string name="lang_not_support">This language is not supported.\nGo To Settings -> Accessiblity -> Text-To-Speech Output -> Select Google Engine.</string>
 
 </resources>

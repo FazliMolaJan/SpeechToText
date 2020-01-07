@@ -52,14 +52,15 @@ public class AlertDialogUtility {
                 .setPositiveButton("Logout", onYesClick).show();
     }
 
-//    public static void showSingleAlert(Context context, String strMessege, DialogInterface.OnClickListener onYesClick) {
-//        new AlertDialog.Builder(context).setIcon(0).setMessage(strMessege)
-//                .setCancelable(true).setPositiveButton("OK", onYesClick)
-//                .show()
-//                .getButton(DialogInterface.BUTTON_POSITIVE)
-//                .setTextColor(context.getResources().getColor(R.color.people));
-//
-//    }
+    public static void showSingleAlert(Context context, String strMessege, DialogInterface.OnClickListener onYesClick) {
+        new AlertDialog.Builder(context).setIcon(0).setMessage(strMessege)
+                .setTitle(context.getString(R.string.app_name))
+                .setCancelable(true).setPositiveButton("OK", onYesClick)
+                .show()
+                .getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(context.getResources().getColor(R.color.black_color));
+
+    }
 
 //    public static void showUserNotExist(Context context) {
 //        new AlertDialog.Builder(context).setIcon(0).setMessage(GlobalData.USER_NOT_EXIST)
