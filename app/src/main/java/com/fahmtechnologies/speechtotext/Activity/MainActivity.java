@@ -7,17 +7,10 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
+import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
-import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -31,9 +24,10 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import static com.github.isabsent.filepicker.SimpleFilePickerDialog.CompositeMode.FOLDER_ONLY_SINGLE_CHOICE;
+
 import com.fahmtechnologies.speechtotext.Adepter.SpinnerAdapter;
 import com.fahmtechnologies.speechtotext.AppUtils.AlertDialogUtility;
 import com.fahmtechnologies.speechtotext.AppUtils.ConnectivityDetector;
@@ -44,26 +38,21 @@ import com.fahmtechnologies.speechtotext.AppUtils.LogM;
 import com.fahmtechnologies.speechtotext.AppUtils.SessionManager;
 import com.fahmtechnologies.speechtotext.Dao.MainActivityDao;
 import com.fahmtechnologies.speechtotext.Model.Languages;
-import com.fahmtechnologies.speechtotext.Network.GetAPIGetJsonObject;
 import com.fahmtechnologies.speechtotext.Network.OnUpdateListener;
 import com.fahmtechnologies.speechtotext.Network.PostAPIJsonObject;
 import com.fahmtechnologies.speechtotext.Network.WebFields;
 import com.fahmtechnologies.speechtotext.R;
 import com.github.isabsent.filepicker.SimpleFilePickerDialog;
-import org.json.JSONException;
+
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import pub.devrel.easypermissions.EasyPermissions;
