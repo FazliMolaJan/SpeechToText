@@ -58,7 +58,7 @@ import java.util.Objects;
 import pub.devrel.easypermissions.EasyPermissions;
 
 
-public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks , SimpleFilePickerDialog.InteractionListenerString,
+public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, SimpleFilePickerDialog.InteractionListenerString,
         SimpleFilePickerDialog.InteractionListenerInt {
 
     public static final int REQ_CODE_SPEECH_INPUT = 1;
@@ -219,9 +219,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.image_save:
                     if (edtSpeakData.getText().toString().length() <= 0) {
-                        Toast.makeText(MainActivity.this, "Please enter text", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.enter_text), Toast.LENGTH_SHORT).show();
                     } else {
-                        if (hasRecordPermission()) {
+                        if (hasStoragePermission()) {
                             saveUserText();
                         } else {
                             EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.storage_permission),
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     break;
                 case R.id.image_Share:
                     if (edtSpeakData.getText().toString().length() <= 0) {
-                        Toast.makeText(MainActivity.this, " Please enter text", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.enter_text), Toast.LENGTH_SHORT).show();
                     } else {
                         Intent shareText = new Intent();
                         shareText.setAction(Intent.ACTION_SEND);
@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     break;
                 case R.id.rlTextToSpeech:
-                    AlertDialogUtility.showToast(MainActivity.this,getResources().getString(R.string.coming_soon));
+                    AlertDialogUtility.showToast(MainActivity.this, getResources().getString(R.string.coming_soon));
 //                    if (ttpResult == TextToSpeech.LANG_MISSING_DATA || ttpResult == TextToSpeech.LANG_NOT_SUPPORTED) {
 //                        AlertDialogUtility.showSingleAlert(MainActivity.this, getString(R.string.lang_not_support), new DialogInterface.OnClickListener() {
 //                            @Override
@@ -308,7 +308,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 //                    }
                     break;
                 case R.id.rlWhatsAppShare:
-                    shareViaWhatsApp();
+                    if (!edtSpeakData.getText().toString().trim().equalsIgnoreCase("")) {
+                        shareViaWhatsApp();
+                    } else {
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.enter_text), Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         } catch (Exception e) {
@@ -346,9 +350,17 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     public void shareViaWhatsApp() {
         Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+        int startSelection = edtSpeakData.getSelectionStart();
+        int endSelection = edtSpeakData.getSelectionEnd();
+        inputText = edtSpeakData.getText().toString();
+        String selectedText = edtSpeakData.getText().toString().substring(startSelection, endSelection);
+        if (!selectedText.equalsIgnoreCase("")) {
+            whatsappIntent.putExtra(Intent.EXTRA_TEXT, selectedText);
+        } else if (!inputText.equalsIgnoreCase("")) {
+            whatsappIntent.putExtra(Intent.EXTRA_TEXT, inputText);
+        }
         whatsappIntent.setType("text/plain");
         whatsappIntent.setPackage("com.whatsapp");
-        whatsappIntent.putExtra(Intent.EXTRA_TEXT, edtSpeakData.getText().toString().trim());
         try {
             Objects.requireNonNull(MainActivity.this).startActivity(whatsappIntent);
         } catch (android.content.ActivityNotFoundException ex) {
@@ -600,7 +612,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
                 break;
             case 7:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     String PathHolder = data.getData().getPath();
                     LogM.Loge("=> Full path " + emailPattern);
                 }
@@ -641,7 +653,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         Log.e("=>", "Please allow all permissions" + requestCode);
     }
-
 
 
     private void callHomeScreenAPI() {
@@ -705,8 +716,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 if (extras.containsKey(SimpleFilePickerDialog.SELECTED_SINGLE_PATH)) {
                     String selectedSinglePath = extras.getString(SimpleFilePickerDialog.SELECTED_SINGLE_PATH);
                     Toast.makeText(this, "Path selected:\n" + selectedSinglePath, Toast.LENGTH_LONG).show();
-                    Log.e("=>","selectedPathsString " + selectedSinglePath);
-                } else if (extras.containsKey(SimpleFilePickerDialog.SELECTED_PATHS)){
+                    Log.e("=>", "selectedPathsString " + selectedSinglePath);
+                } else if (extras.containsKey(SimpleFilePickerDialog.SELECTED_PATHS)) {
                     List<String> selectedPaths = extras.getStringArrayList(SimpleFilePickerDialog.SELECTED_PATHS);
                     showSelectedPathsToast(selectedPaths);
                 }
@@ -718,14 +729,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         return false;
     }
 
-    private void showSelectedPathsToast(List<String> selectedPaths){
-        if (selectedPaths != null && !selectedPaths.isEmpty()){
+    private void showSelectedPathsToast(List<String> selectedPaths) {
+        if (selectedPaths != null && !selectedPaths.isEmpty()) {
             String selectedPathsString = "\n";
             for (String path : selectedPaths)
                 selectedPathsString += path + "\n";
             Toast.makeText(this, "Paths selected:" + selectedPathsString, Toast.LENGTH_LONG).show();
 
-            Log.e("=>","selectedPathsString " + selectedPathsString);
+            Log.e("=>", "selectedPathsString " + selectedPathsString);
         }
     }
 

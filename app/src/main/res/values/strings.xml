@@ -69,5 +69,6 @@
     <string name="record_permission">Allow permission for Speech To Text</string>
     <string name="storage_permission">Please allow storage permission to save file</string>
     <string name="coming_soon">Coming soon</string>
+    <string name="enter_text">Please enter text</string>
 
 </resources>
