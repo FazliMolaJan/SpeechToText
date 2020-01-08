@@ -5,23 +5,31 @@
     android:layout_gravity="center"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
-        android:id="@+id/tvIcons"
-        android:layout_width="@dimen/_180sdp"
-        android:layout_height="@dimen/_200sdp"
-        android:background="@drawable/speechtotext"
-        android:layout_centerInParent="true"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Speech to Text \n(વાણી થી લખાણ)"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/_20sdp"
-        android:textStyle="bold"
-        android:layout_below="@+id/tvIcons"
-        android:layout_centerHorizontal="true"
-        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvIcons"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:background="@drawable/speechtotext"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speech to Text \n(વાણી થી લખાણ)"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold"
+            />
+
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>
