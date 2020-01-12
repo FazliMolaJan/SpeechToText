@@ -234,11 +234,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     if (edtSpeakData.getText().toString().length() <= 0) {
                         Toast.makeText(MainActivity.this, getResources().getString(R.string.enter_text), Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent shareText = new Intent();
-                        shareText.setAction(Intent.ACTION_SEND);
-                        shareText.putExtra(Intent.EXTRA_TEXT, edtSpeakData.getText().toString());
-                        shareText.setType("text/plain");
-                        startActivity(shareText);
+                        shareOption();
+//                        Intent shareText = new Intent();
+//                        shareText.setAction(Intent.ACTION_SEND);
+//                        shareText.putExtra(Intent.EXTRA_TEXT, edtSpeakData.getText().toString());
+//                        shareText.setType("text/plain");
+//                        startActivity(shareText);
                     }
                     break;
                 case R.id.ivStartSpeak:
@@ -319,6 +320,22 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             e.printStackTrace();
         }
     };
+
+    private void shareOption() {
+        Intent shareText = new Intent();
+        int startSelection = edtSpeakData.getSelectionStart();
+        int endSelection = edtSpeakData.getSelectionEnd();
+        inputText = edtSpeakData.getText().toString();
+        String selectedText = edtSpeakData.getText().toString().substring(startSelection, endSelection);
+        if (!selectedText.equalsIgnoreCase("")) {
+            shareText.putExtra(Intent.EXTRA_TEXT, selectedText);
+        } else if (!inputText.equalsIgnoreCase("")) {
+            shareText.putExtra(Intent.EXTRA_TEXT, inputText);
+        }
+        shareText.setAction(Intent.ACTION_SEND);
+        shareText.setType("text/plain");
+        startActivity(shareText);
+    }
 
     private void saveUserText() {
         Calendar cal = Calendar.getInstance();
