@@ -59,7 +59,7 @@
     <string name="speed_text_to_french">Speech to Text (parole-texte)</string>
     <string name="speed_text_to_arebic">Speech to Text (تحويل الكلام إلى نص)</string>
     <string name="speed_text_to_persion">Speech to Text (نوشته شده از سخنرانی)</string>
-    <string name="speed_text_to_urdu">Speech to Text (تقرر سے لکھائی )</string>
+    <string name="speed_text_to_urdu">Speech to Text (تقرر كا تقرير)</string>
     <string name="please_enter_value">Please enter value</string>
     <string name="allow_permmision">Please allow all permissions</string>
     <string name="yes">Yes</string>
