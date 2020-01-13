@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
-
     private void callAllPermission() {
 //        if (EasyPermissions.hasPermissions(MainActivity.this,
 //                Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
