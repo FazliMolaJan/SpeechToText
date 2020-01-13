@@ -21,7 +21,6 @@ public class MainActivityDao {
     // TODO: 03-01-2020 Use two difference array for Gujarati and Urdu language key is differ for Transalate and Speech by Sakib START
     public List<Languages> getLanguesForSpeech(Context context){
         alLang = new ArrayList<>();
-        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu_india), context.getResources().getString(R.string.urdu)));
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_gujarati_india),context.getResources().getString(R.string.gujarati) ));
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_hind), context.getResources().getString(R.string.hindi) ));
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_english), context.getResources().getString(R.string.english)));
@@ -30,6 +29,7 @@ public class MainActivityDao {
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_Swahili), context.getResources().getString(R.string.swahili)));
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_arebic), context.getResources().getString(R.string.arabic)));
         alLang.add(new Languages(context.getResources().getString(R.string.lang_id_persian), context.getResources().getString(R.string.persian)));
+        alLang.add(new Languages(context.getResources().getString(R.string.lang_id_urdu_india), context.getResources().getString(R.string.urdu)));
         return alLang;
     }
 
